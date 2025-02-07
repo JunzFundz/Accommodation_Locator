@@ -68,7 +68,7 @@ class Signup extends Dbh
         $mail->Port = 587;
 
         $mail->Username   = 'junzfundador142@gmail.com';
-        $mail->Password   = 'dqrbvhpzxfouekae';
+        $mail->Password   = 'apikey';
 
         $mail->setFrom('junzfundador142@gmail.com');
         $mail->addAddress($email);
