@@ -10,7 +10,11 @@ $city = isset($_GET['city']) ? $_GET['city'] : '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Location Directions</title>
+<<<<<<< HEAD
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtQyCEkAx4nfFPjLVefmqPaLbRj2ZZvzk&callback=initMap&v=weekly" async defer></script>
+=======
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&v=weekly" async defer></script>
+>>>>>>> b7fc3f8035c0820d51dd8551767b87f5114ff51e
     <script>
     let map, directionsService, directionsRenderer;
 
