@@ -13,29 +13,29 @@ class Signup extends Dbh
         return str_pad(mt_rand(100000, 999999), 6, '0', STR_PAD_LEFT);
     }
 
-    public function signup($fname, $lname, $email, $hashedPassword)
+    public function signup($fname, $lname, $mname, $email, $hashedPassword)
     {
         $otp = $this->generateOtp();
         $conn = $this->connect();
 
-        // $checkStmt = $conn->prepare("SELECT u_email FROM tbl_users WHERE u_email = ?");
-        // $checkStmt->bind_param("s", $email);
-        // $checkStmt->execute();
-        // $checkStmt->store_result();
+        $checkStmt = $conn->prepare("SELECT u_email FROM tbl_users WHERE u_email = ?");
+        $checkStmt->bind_param("s", $email);
+        $checkStmt->execute();
+        $checkStmt->store_result();
 
-        // if ($checkStmt->num_rows > 0) {
-        //     return 1;
-        // }
+        if ($checkStmt->num_rows > 0) {
+            return 1;
+        }
 
         session_start();
 
-        $stmt = $conn->prepare("INSERT INTO tbl_users (u_fname, u_lname, u_email, u_pass, u_otp, u_otp_created, u_verified, u_date_created) VALUES (?,?,?,?,?,NOW(),'no',NOW())");
+        $stmt = $conn->prepare("INSERT INTO tbl_users (u_fname, u_lname, u_mname, u_email, u_pass, u_otp, u_otp_created, u_verified, u_date_created) VALUES (?,?,?,?,?,?,NOW(),'no',NOW())");
 
         if (!$stmt) {
             return 2;
         }
 
-        $stmt->bind_param("ssssi", $fname, $lname, $email, $hashedPassword, $otp);
+        $stmt->bind_param("sssssi", $fname, $lname, $mname, $email, $hashedPassword, $otp);
 
         if (!$stmt->execute()) {
             return 3;
@@ -128,4 +128,36 @@ class Signup extends Dbh
 
         return false;
     }
+}
+
+class Login extends Dbh
+{
+    public function login($password, $email)
+    {
+        session_start();
+        
+        $stmt = $this->connect()->prepare("SELECT u_id, u_email, u_pass FROM tbl_users WHERE u_email = ? AND u_verified = 'yes'");
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $stored_password = $row["u_pass"];
+                if (password_verify($password, $stored_password)) {
+                    $_SESSION['u_id'] = $row["u_id"];
+                    $_SESSION['u_email'] = $row["u_email"];
+
+                    $redirect = ($_SESSION['u_id'] === 72) ? '../public/admin/home.php' : '../public/client/home.php';
+
+                    return $redirect;
+                } else {
+                    return 1;
+                }
+            }
+        } else {
+            return 2;
+        }
+    }
+
 }

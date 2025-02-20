@@ -6,6 +6,7 @@ $sup = new Signup();
 if (isset($_POST['signup'])) {
     $fname = $_POST['first_name'];
     $lname = $_POST['last_name'];
+    $mname = $_POST['mname'];
     $email = $_POST['email'];
     $pass = $_POST['password'];
 
@@ -19,7 +20,7 @@ if (isset($_POST['signup'])) {
 
     $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
 
-    $input = $sup->signup($fname, $lname, $email, $hashedPassword);
+    $input = $sup->signup($fname, $lname, $mname, $email, $hashedPassword);
 
     if ($input === 1) {
         $response = array(
