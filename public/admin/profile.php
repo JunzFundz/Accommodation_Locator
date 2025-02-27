@@ -1,15 +1,16 @@
 <?php
 session_start();
 $_SESSION['u_id'];
+include('../../Classes/Admin.php');
+$show = new Admin();
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) && isset($_GET['number'])) {
     $id = $_GET['id'];
+    $number = $_GET['number'];
 
-    include('../../Classes/Admin.php');
-    $show = new Admin();
     $result = $show->showProfile($id);
+    $results = $show->showItem($number);
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -69,34 +70,68 @@ if (isset($_GET['id'])) {
     </nav>
 
     <section class="bg-white">
-        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
-            <div class="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
-                <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 ">Providers</h2>
-                <p class="font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque minima repellendus delectus dolore mollitia sint nisi. Quasi, dicta voluptas. Vero, id magnam. Porro, quia totam nisi dolore est repellat cum!</p>
-            </div>
-            <div class="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
-
-                <?php foreach ($result as $rows) {
-                    $images = json_decode($rows['p_img'], true);
-                    $firstImage = (!empty($images) && is_array($images)) ? htmlspecialchars($images[0], ENT_QUOTES, 'UTF-8') : 'default.jpg';
-                ?>
-                    <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
-
-                        <a href="profile.php?id=<?= $rows['u_id'] ?>">
-                            <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="../../uploads/<?php echo $firstImage; ?>" alt="Bonnie Avatar">
-                        </a>
-
-                        <div class="p-5">
-                            <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                <a href="#"><?= $rows['p_name'] ?></a>
-                            </h3>
-                            <span class="text-gray-500 dark:text-gray-400"><?= $rows['pi_city'] ?></span>
-                            <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">
-                                <?= $rows['pi_block'] . " " . $rows['pi_brgy'] . ", " . $rows['pi_street'] . ", " . $rows['pi_city'] ?>
+        <div class=" px-4 mx-auto max-w-screen-xl ">
+            <div class="mx-auto max-w-screen-sm text-center">
+                <section class="bg-white">
+                    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+                        <div class="mx-auto max-w-screen-sm text-center">
+                            <h1 class="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 ">
+                                <center>
+                                    <img src="logo.png" style="height: 10rem" alt="Flowbite Logo">
+                                </center>
+                            </h1>
+                            <p class="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl"><?= htmlspecialchars($results['p_name'] ?? 'N/A'); ?></p>
+                            <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
+                                <i class="fa-solid fa-location-dot text-red-500"></i> <a href="<?= htmlspecialchars($results['p_link']); ?>"><?= htmlspecialchars($results['p_address'] ?? 'N/A'); ?></a>
+                            </p>
+                            <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
+                                <i class="fa-solid fa-phone"></i> <a href="<?= htmlspecialchars($results['p_link']); ?>"><?= htmlspecialchars($results['pi_contact'] ?? 'N/A'); ?></a>
                             </p>
                         </div>
                     </div>
-                <?php } ?>
+                </section>
+            </div>
+
+            <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
+
+                <?php if (!empty($result)) : ?>
+                    <?php foreach ($result as $rows) : ?>
+                        <?php
+                        $images = json_decode($rows['p_img'], true);
+                        $firstImage = (!empty($images) && is_array($images)) ? htmlspecialchars($images[0], ENT_QUOTES, 'UTF-8') : 'default.jpg';
+                        ?>
+                        <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700">
+                            <div class="h-56 w-full">
+                                <a href="rooms.php?user=<?= $rows['p_id'] ?>">
+                                    <img class="mx-auto h-full " src="../../uploads/<?php echo $firstImage; ?>" alt="Property Image" />
+                                </a>
+                            </div>
+                            <div class="pt-6">
+                                <a hhref="rooms.php?user=<?= $rows['p_id'] ?>" class="text-lg font-semibold leading-tight text-gray-900 hover:underline "><?php echo $rows['p_name'] ?></a>
+
+                                <ul class="mt-2 flex items-center gap-4">
+                                    <li class="flex items-center gap-2">
+                                        <p class="text-sm font-medium">
+                                            <?= $rows['pi_block'] . " " . $rows['pi_brgy'] . ", " . $rows['pi_street'] . ", " . $rows['pi_city'] ?>
+                                        </p>
+                                    </li>
+                                </ul>
+
+                                <div class="mt-4 flex items-center justify-between gap-4">
+                                    <p class="text-2xl font-extrabold leading-tight">₱<?php echo number_format($rows['p_price']) ?></p>
+
+                                    <button type="button" class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <a href="rooms.php?user=<?= $rows['p_id'] ?>">
+                                            View rooms
+                                        </a>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <p class="text-center text-red-500">No data found.</p>
+                <?php endif; ?>
 
             </div>
         </div>

@@ -5,6 +5,35 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 class Users extends Dbh
 {
+    public function getUserInfo($user)
+    {
+        $conn = $this->connect();
+        if (!$conn) {
+            die("Database connection failed: " . $conn->connect_error);
+        }
+        
+        $sql = "SELECT u.*, p.*, r.*, 
+            COUNT(p.u_id) AS number_of_acc, 
+            SUM(CASE WHEN r.p_status = 3 THEN 1 ELSE 0 END) AS number_of_req
+        FROM tbl_users u
+        INNER JOIN tbl_personal_info p ON p.u_id = u.u_id
+        INNER JOIN tbl_provider r ON r.u_id = p.u_id
+        WHERE u.u_id = ?
+        GROUP BY u.u_id";
+        
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error); // Prints MySQL error
+        }
+        
+        $stmt->bind_param("i", $user);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        return $result->num_rows > 0 ? $result->fetch_assoc() : null;
+        
+    }
+
     public function loadInfo($id)
     {
         $stmt = $this->connect()->prepare("SELECT * FROM tbl_users WHERE u_id =?");
@@ -33,6 +62,17 @@ class Users extends Dbh
         } else {
             return false;
         }
+    }
+
+    public function viewById($id)
+    {
+        $stmt = $this->connect()->prepare("SELECT * FROM tbl_provider WHERE u_id = ? ");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $user_data = $result->fetch_all(MYSQLI_ASSOC);
+        return $user_data;
     }
 
     public function apply($id, $fname, $lname, $mname, $brgy, $block, $street, $city, $zip, $gender, $contact)
@@ -74,15 +114,84 @@ class Users extends Dbh
         return $result;
     }
 
-    public function viewById($id)
+    public function addRoom($pid, $uid, $rprice, $rname, $comp, $description, $img)
     {
-        $stmt = $this->connect()->prepare("SELECT * FROM tbl_provider WHERE u_id = ?");
+        $stmt = $this->connect()->prepare("INSERT INTO tbl_rooms (p_id, u_id, tr_name, tr_images, tr_price, tr_description, tr_date_added) VALUES(?,?,?,?,?,?,NOW())");
+        $stmt->bind_param("iissis", $pid, $uid, $rname, $img, $rprice, $description);
+
+        $result = $stmt->execute();
+        return $result;
+    }
+
+    public function showRooms($pid)
+    {
+        $stmt = $this->connect()->prepare("SELECT *
+        FROM tbl_rooms r
+        INNER JOIN tbl_provider p ON p.p_id = r.p_id
+        WHERE r.p_id = ?");
+        $stmt->bind_param("i", $pid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $response = $result->fetch_all(MYSQLI_ASSOC);
+
+        return $response;
+    }
+
+    public function getRoom($room)
+    {
+        $stmt = $this->connect()->prepare("SELECT * FROM tbl_rooms WHERE tr_id = ?");
+        $stmt->bind_param("i", $room);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+
+        $data['tr_images'] = json_decode($data['tr_images'], true);
+
+        return $data;
+    }
+
+    public function deleteRoomImage($img, $id)
+    {
+        $stmt = $this->connect()->prepare("SELECT tr_images FROM tbl_rooms WHERE tr_id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        $user_data = $result->fetch_all(MYSQLI_ASSOC);
-        return $user_data;
+        if ($row = $result->fetch_assoc()) {
+            $imagePaths = json_decode($row['tr_images'], true);
+
+            if (!is_array($imagePaths)) {
+                return false;
+            }
+
+            if (($key = array_search($img, $imagePaths)) !== false) {
+                unset($imagePaths[$key]);
+            }
+
+            $updatedImages = json_encode(array_values($imagePaths));
+
+            $stmt = $this->connect()->prepare("UPDATE tbl_rooms SET tr_images = ? WHERE tr_id = ?");
+            $stmt->bind_param("si", $updatedImages, $id);
+            $stmt->execute();
+
+            $imagePath = "../uploads/" . $img;
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
+            return ($stmt->affected_rows > 0);
+        }
+
+        return false;
+    }
+
+    public function updateRoom($id, $name, $price, $description, $img)
+    {
+        $stmt = $this->connect()->prepare("UPDATE tbl_rooms SET tr_name = ? , tr_images = ? , tr_price = ?, tr_description = ? WHERE tr_id = ?");
+        $stmt->bind_param("ssisi", $name, $img, $price, $description, $id);
+
+        $result = $stmt->execute();
+        return $result;
     }
 
     public function viewData($id)
@@ -105,12 +214,149 @@ class Users extends Dbh
         return $stmt->affected_rows;
     }
 
-    public function deleteProvider($id)
+    public function deleteRoom($id)
     {
-        $stmt = $this->connect()->prepare("DELETE FROM tbl_provider WHERE p_id = ?");
-
+        $stmt = $this->connect()->prepare("SELECT tr_images FROM tbl_rooms WHERE tr_id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            $images = json_decode($row['tr_images'], true);
+
+            if (is_array($images)) {
+                foreach ($images as $image) {
+                    $imagePath = realpath(__DIR__ . "/../uploads/" . trim($image));
+
+                    if (!empty($image) && file_exists($imagePath)) {
+                        chmod($imagePath, 0777);
+                        if (unlink($imagePath)) {
+                            error_log("Deleted: " . $imagePath);
+                        } else {
+                            error_log("Failed to delete: " . $imagePath);
+                        }
+                    } else {
+                        error_log("Not found: " . $imagePath);
+                    }
+                }
+            } else {
+                $imagePath = realpath(__DIR__ . "/../uploads/" . trim($row['tr_images']));
+
+                if (!empty($row['tr_images']) && file_exists($imagePath)) {
+                    chmod($imagePath, 0777);
+                    if (unlink($imagePath)) {
+                        error_log("Deleted: " . $imagePath);
+                    } else {
+                        error_log("Failed to delete: " . $imagePath);
+                    }
+                } else {
+                    error_log("Not found: " . $imagePath);
+                }
+            }
+        }
+
+        $stmt = $this->connect()->prepare("DELETE FROM tbl_rooms WHERE tr_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        return $stmt->affected_rows;
+    }
+
+    public function deleteRoomProvider($id)
+    {
+        $stmt = $this->connect()->prepare("SELECT tr_images FROM tbl_rooms WHERE p_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            $images = json_decode($row['tr_images'], true);
+
+            if (is_array($images)) {
+                foreach ($images as $image) {
+                    $imagePath = realpath(__DIR__ . "/../uploads/" . trim($image));
+
+                    if (!empty($image) && file_exists($imagePath)) {
+                        chmod($imagePath, 0777);
+                        if (unlink($imagePath)) {
+                            error_log("Deleted: " . $imagePath);
+                        } else {
+                            error_log("Failed to delete: " . $imagePath);
+                        }
+                    } else {
+                        error_log("Not found: " . $imagePath);
+                    }
+                }
+            } else {
+                $imagePath = realpath(__DIR__ . "/../uploads/" . trim($row['tr_images']));
+
+                if (!empty($row['tr_images']) && file_exists($imagePath)) {
+                    chmod($imagePath, 0777);
+                    if (unlink($imagePath)) {
+                        error_log("Deleted: " . $imagePath);
+                    } else {
+                        error_log("Failed to delete: " . $imagePath);
+                    }
+                } else {
+                    error_log("Not found: " . $imagePath);
+                }
+            }
+        }
+
+        $stmt = $this->connect()->prepare("DELETE FROM tbl_rooms WHERE p_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        return $stmt->affected_rows;
+    }
+
+    public function deleteProvider($id)
+    {
+        $stmt = $this->connect()->prepare("SELECT p_img FROM tbl_provider WHERE p_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            $images = json_decode($row['p_img'], true);
+
+            if (is_array($images)) {
+                foreach ($images as $image) {
+                    $imagePath = realpath(__DIR__ . "/../uploads/" . trim($image));
+
+                    if (!empty($image) && file_exists($imagePath)) {
+                        chmod($imagePath, 0777);
+                        if (unlink($imagePath)) {
+                            error_log("Deleted: " . $imagePath);
+                        } else {
+                            error_log("Failed to delete: " . $imagePath);
+                        }
+                    } else {
+                        error_log("Not found: " . $imagePath);
+                    }
+                }
+            } else {
+                $imagePath = realpath(__DIR__ . "/../uploads/" . trim($row['p_img']));
+
+                if (!empty($row['p_img']) && file_exists($imagePath)) {
+                    chmod($imagePath, 0777);
+                    if (unlink($imagePath)) {
+                        error_log("Deleted: " . $imagePath);
+                    } else {
+                        error_log("Failed to delete: " . $imagePath);
+                    }
+                } else {
+                    error_log("Not found: " . $imagePath);
+                }
+            }
+        }
+
+        $stmt = $this->connect()->prepare("DELETE FROM tbl_provider WHERE p_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $this->deleteRoomProvider($id);
+
         return $stmt->affected_rows;
     }
 

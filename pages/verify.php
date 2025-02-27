@@ -118,8 +118,6 @@ include('../database/verifiy-account.php');
             const otp1 = $('#code1').val();
             const otp = $('#code2').val();
 
-            console.log(email, otp)
-
             $.ajax({
                 type: 'POST',
                 url: '../database/check-otp.php',

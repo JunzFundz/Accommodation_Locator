@@ -91,7 +91,7 @@ class Admin extends Dbh
 
     public function showProviders()
     {
-        $stmt = $this->connect()->query("SELECT DISTINCT pr.u_id, i.*, r.*, u.*
+        $stmt = $this->connect()->query("SELECT DISTINCT pr.u_id, pr.p_img, pr.p_name, pr.p_id, pr.p_price, i.*, r.*, u.*
         FROM tbl_registration r
         INNER JOIN tbl_personal_info i ON i.u_id = r.u_id
         INNER JOIN tbl_provider pr ON pr.u_id = i.u_id
@@ -100,6 +100,21 @@ class Admin extends Dbh
         $result = $stmt->fetch_all(MYSQLI_ASSOC);
 
         return $result;
+    }
+
+    public function showItem($number)
+    {
+        $stmt = $this->connect()->prepare("SELECT * FROM tbl_provider p
+            INNER JOIN tbl_personal_info pi ON p.u_id = pi.u_id
+            WHERE p.p_id = ?");
+
+        $stmt->bind_param("i", $number);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $items = $result->fetch_assoc();
+
+        return $items;
     }
 
     public function showProfile($id)

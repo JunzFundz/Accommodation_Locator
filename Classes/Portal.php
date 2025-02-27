@@ -13,6 +13,33 @@ class Signup extends Dbh
         return str_pad(mt_rand(100000, 999999), 6, '0', STR_PAD_LEFT);
     }
 
+    public function forgotPassword($email, $npass)
+    {
+        $conn = $this->connect();
+    
+        $checkStmt = $conn->prepare("SELECT u_email FROM tbl_users WHERE u_email = ?");
+        $checkStmt->bind_param("s", $email);
+        $checkStmt->execute();
+        $checkStmt->store_result();
+    
+        if ($checkStmt->num_rows === 0) {
+            return 2; // Account not found
+        }
+    
+        $hashedPassword = password_hash($npass, PASSWORD_DEFAULT);
+    
+        // Step 3: Update the password
+        $stmt = $conn->prepare("UPDATE tbl_users SET u_pass = ? WHERE u_email = ?");
+        $stmt->bind_param("ss", $hashedPassword, $email);
+        
+        if ($stmt->execute()) {
+            return true;
+        }
+    
+        return false;
+    }
+    
+
     public function signup($fname, $lname, $mname, $email, $hashedPassword)
     {
         $otp = $this->generateOtp();
@@ -135,7 +162,7 @@ class Login extends Dbh
     public function login($password, $email)
     {
         session_start();
-        
+
         $stmt = $this->connect()->prepare("SELECT u_id, u_email, u_pass FROM tbl_users WHERE u_email = ? AND u_verified = 'yes'");
         $stmt->bind_param('s', $email);
         $stmt->execute();
@@ -159,5 +186,4 @@ class Login extends Dbh
             return 2;
         }
     }
-
 }

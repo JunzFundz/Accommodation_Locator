@@ -69,26 +69,26 @@ $result = $show->showProviders();
                 <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 ">Providers</h2>
                 <p class="font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque minima repellendus delectus dolore mollitia sint nisi. Quasi, dicta voluptas. Vero, id magnam. Porro, quia totam nisi dolore est repellat cum!</p>
             </div>
-            <div class="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
 
+            <div class="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
                 <?php foreach ($result as $rows) { ?>
                     <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
-                        <a href="profile.php?id=<?= $rows['u_id'] ?>">
+                        <a href="profile.php?id=<?= $rows['u_id'] ?> && number=<?= $rows['p_id'] ?>">
                             <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="default.jpg" alt="Bonnie Avatar">
                         </a>
                         <div class="p-5">
                             <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                <a href="#"><?= $rows['u_fname'] . ", " . $rows['u_lname'] . " " .$rows['u_mname'] ?></a>
+                                <a href="#"><?= $rows['u_fname'] . ", " . $rows['u_lname'] . " " . $rows['u_mname'] ?></a>
                             </h3>
                             <span class="text-gray-500 dark:text-gray-400"><?= $rows['pi_city'] ?></span>
                             <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">
-                                <?= $rows['pi_block'] . " " .$rows['pi_brgy'] . ", " . $rows['pi_street'] . ", " .$rows['pi_city'] ?>
+                                <?= $rows['pi_block'] . " " . $rows['pi_brgy'] . ", " . $rows['pi_street'] . ", " . $rows['pi_city'] ?>
                             </p>
                         </div>
                     </div>
                 <?php } ?>
-
             </div>
+
         </div>
     </section>
 

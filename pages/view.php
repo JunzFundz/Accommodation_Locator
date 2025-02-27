@@ -4,7 +4,7 @@ include('../Classes/Users.php');
 
 if (isset($_GET['number'])) {
     $id = $_GET['number'];
-
+    
     $show = new Users();
     $result = $show->showItem($id);
 }
@@ -106,78 +106,58 @@ if (isset($_GET['number'])) {
         </div>
     </nav>
 
-    <nav class="">
-        <div class="max-w-screen-xl px-4 py-3 mx-auto">
-            <div class="flex items-center">
-                <ul class="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm menu-below">
-                    <li>
-                        <a href="#" class="text-gray-900  hover:underline" aria-current="page">Boarding House</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900  hover:underline">Lodging House</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900  hover:underline">Hotels</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900  hover:underline">Transportation</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <section class="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
-        <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
-            <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
-                <div class="mt-6 sm:mt-8 lg:mt-0">
-                    <h1
-                        class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                        <?= htmlspecialchars($result['p_name'] ?? 'N/A'); ?>
-                    </h1>
-                    <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
-                        <p
-                            class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">
-                            <?= htmlspecialchars(number_format($result['p_price'] ?? 'N/A')); ?>
-                        </p>
-                    </div>
-
-                    <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
-
-                    <p class="mb-6 text-gray-500 dark:text-gray-400">
-                        <?= htmlspecialchars($result['p_desc'] ?? 'N/A'); ?>
-                    </p>
-
-                    <section class="bg-white dark:bg-gray-900 antialiased">
-                        <div class="max-w-screen-xl mx-auto lg:py-24">
-
-                            <div class="flow-root max-w-3xl mx-auto mt-8 sm:mt-12 lg:mt-16">
-                                <div class="-my-4 divide-y divide-gray-200 dark:divide-gray-700">
-                                    <div class="flex flex-col gap-2 py-4 sm:gap-6 sm:flex-row sm:items-center">
-                                        <p class="w-32 text-lg font-normal text-gray-500 sm:text-right dark:text-gray-400 shrink-0">
-                                            Contact
-                                        </p>
-                                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                            <p class="hover:underline">: <?= htmlspecialchars($result['pi_contact'] ?? 'N/A'); ?></p>
-                                        </h3>
-                                    </div>
-
-                                    <div class="flex flex-col gap-2 py-4 sm:gap-6 sm:flex-row sm:items-center">
-                                        <p class="w-32 text-lg font-normal text-gray-500 sm:text-right dark:text-gray-400 shrink-0">
-                                            08:00 - 09:00
-                                        </p>
-                                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                            <p class="hover:underline">: <?= htmlspecialchars($result['pi_contact'] ?? 'N/A'); ?></p>
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
+    <section class="bg-white">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+            <div class="mx-auto max-w-screen-sm text-center">
+                <h1 class="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 ">
+                    <center>
+                        <img src="logo.png" style="height: 10rem" alt="Flowbite Logo">
+                    </center>
+                </h1>
+                <p class="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl"><?= htmlspecialchars($result['p_name'] ?? 'N/A'); ?></p>
+                <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
+                    <i class="fa-solid fa-location-dot text-red-500"></i> <a href="<?= htmlspecialchars($result['p_link']); ?>"><?= htmlspecialchars($result['p_address'] ?? 'N/A'); ?></a>
+                </p>
+                <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
+                    <i class="fa-solid fa-phone"></i> <a href="<?= htmlspecialchars($result['p_link']); ?>"><?= htmlspecialchars($result['p_address'] ?? 'N/A'); ?></a>
+                </p>
+                <a href="#" class="inline-flex text-white bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4">Back to Homepage</a>
             </div>
         </div>
     </section>
+
+    <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white antialiased">
+        <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
+            <article class="mx-auto w-full format format-sm sm:format-base lg:format-lg format-blue ">
+
+                <p class="lead text-gray-900"><?= htmlspecialchars($result['p_desc'] ?? 'N/A'); ?></p>
+                <figure>
+                    <div class="masonry-grid">
+                        <?php if (!empty($result) && isset($result['p_img']) && !empty($result['p_img'])):
+                            $images = json_decode($result['p_img'], true);
+
+                            if (!is_array($images)) {
+                                echo '<p style="text-align: center; color: gray;">Invalid image data.</p>';
+                            } else {
+                                foreach ($images as $index => $image): ?>
+
+                                    <!-- Masonry Item -->
+                                    <div class="masonry-item">
+                                        <img src="../uploads/<?= htmlspecialchars(trim($image)) ?>"
+                                            alt="Image <?= $index + 1 ?>">
+                                    </div>
+
+                                <?php endforeach; ?>
+                            <?php }
+                        else: ?>
+                            <p style="text-align: center; color: gray;">No images available.</p>
+                        <?php endif; ?>
+                    </div>
+                    <figcaption>Digital art by Anonymous</figcaption>
+                </figure>
+            </article>
+        </div>
+    </main>
 
 </body>
 

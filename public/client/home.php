@@ -4,6 +4,11 @@ include('../../database/check.php');
 include('add.php');
 
 $_SESSION['u_id'];
+
+foreach ($data as $datas) {
+    $res = $datas['p_status'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +24,7 @@ $_SESSION['u_id'];
 </head>
 
 <body>
-    <nav class="custom-nav-bg sticky top-0 z-50 bg-white border-gray-200 dark:border-gray-700" style="z-index: 0;">
+    <nav class="custom-nav-bg sticky top-0 z-50 bg-white border-gray-200 dark:border-gray-700" style="z-index: 11;">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="../images/logo.png" class="h-11" alt="Flowbite Logo" />
@@ -33,7 +38,7 @@ $_SESSION['u_id'];
             <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
                 <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
                     <li>
-                        <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">Home</a>
+                        <a href="home.php" class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">Home</a>
                     </li>
                     <li>
                         <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
@@ -45,7 +50,7 @@ $_SESSION['u_id'];
                         <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                                 <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Account settings</a>
+                                    <a href="settings.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Account settings</a>
                                 </li>
                             </ul>
                             <div class="py-1">
@@ -59,6 +64,7 @@ $_SESSION['u_id'];
     </nav>
 
     <?php if ($result === true) { ?>
+
         <section class="py-8 antialiased md:py-12 h-full">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
                 <!-- Heading & Filters -->
@@ -74,30 +80,6 @@ $_SESSION['u_id'];
                                         Add new
                                     </a>
                                 </li>
-                                <li>
-                                    <div class="flex items-center">
-                                        <svg class="h-5 w-5 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
-                                        </svg>
-                                        <a href="#" class="ms-1 text-sm font-medium md:ms-2">Boarding Houses</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="flex items-center">
-                                        <svg class="h-5 w-5 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
-                                        </svg>
-                                        <a href="#" class="ms-1 text-sm font-medium md:ms-2">Hotels</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="flex items-center">
-                                        <svg class="h-5 w-5 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
-                                        </svg>
-                                        <a href="#" class="ms-1 text-sm font-medium md:ms-2">Lodging Houses</a>
-                                    </div>
-                                </li>
                             </ol>
                         </nav>
                         <h2 class="mt-3 text-xl font-semibold text-gray-900  sm:text-2xl"></h2>
@@ -109,23 +91,50 @@ $_SESSION['u_id'];
                     <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
                         <!-- box -->
 
-                        <?php foreach ($data as $row) : ?>
-                            <?php
+                        <?php foreach ($data as $row) :
+
                             $images = json_decode($row['p_img'], true);
                             $firstImage = (!empty($images) && is_array($images)) ? htmlspecialchars($images[0], ENT_QUOTES, 'UTF-8') : 'default.jpg';
-                            ?>
-                            <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                                <div class="h-56 w-full">
-                                    <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>">
-                                        <img class="mx-auto h-full " src="../../uploads/<?php echo $firstImage; ?>" alt="Property Image" />
-                                    </a>
+
+                            if ($row['p_status'] == 3) { ?>
+
+                                <div class="cursor-not-allowed relative rounded-lg border border-gray-200  p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                                    <div style="background-color: white; opacity: 40%" class="absolute inset-0 flex items-center justify-center z-10">
+                                        <span class="text-gray-900 font-semibold text-lg">Under Validation</span>
+                                    </div>
+
+                                    <div class="h-56 w-full opacity-60 pointer-events-none">
+                                        <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>">
+                                            <img class="mx-auto h-full" src="../../uploads/<?php echo $firstImage; ?>" alt="Property Image" />
+                                        </a>
+                                    </div>
+
+                                    <div class="pt-6 opacity-60 pointer-events-none">
+                                        <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>"
+                                            class="text-lg font-semibold leading-tight text-gray-900 dark:text-white">
+                                            <?php echo htmlspecialchars($row['p_name']); ?>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="pt-6">
-                                    <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
-                                        <?php echo htmlspecialchars($row['p_name']); ?>
-                                    </a>
+
+
+                            <?php } else { ?>
+
+                                <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                                    <div class="h-56 w-full">
+                                        <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>">
+                                            <img class="mx-auto h-full " src="../../uploads/<?php echo $firstImage; ?>" alt="Property Image" />
+                                        </a>
+                                    </div>
+                                    <div class="pt-6">
+                                        <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
+                                            <?php echo htmlspecialchars($row['p_name']); ?>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
+
+                            <?php } ?>
+
                         <?php endforeach; ?>
                     <?php else : ?>
                         <p class="text-center text-red-500">No data found.</p>
@@ -138,260 +147,11 @@ $_SESSION['u_id'];
             </div>
 
             <!-- Filter modal -->
-            <form action="#" method="get" id="filterModal" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-modal w-full overflow-y-auto overflow-x-hidden p-4 md:inset-0 md:h-full">
-                <div class="relative h-full w-full max-w-xl md:h-auto">
-                    <!-- Modal content -->
-                    <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
-                        <!-- Modal header -->
-                        <div class="flex items-start justify-between rounded-t p-4 md:p-5">
-                            <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filters</h3>
-                            <button type="button" class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="filterModal">
-                                <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                                </svg>
-                                <span class="sr-only">Close modal</span>
-                            </button>
-                        </div>
-                        <!-- Modal body -->
-                        <div class="px-4 md:px-5">
-                            <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-                                <ul class="-mb-px flex flex-wrap text-center text-sm font-medium" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-                                    <li class="mr-1" role="presentation">
-                                        <button class="inline-block pb-2 pr-1" id="brand-tab" data-tabs-target="#brand" type="button" role="tab" aria-controls="profile" aria-selected="false">Brand</button>
-                                    </li>
-                                    <li class="mr-1" role="presentation">
-                                        <button class="inline-block px-2 pb-2 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="advanced-filers-tab" data-tabs-target="#advanced-filters" type="button" role="tab" aria-controls="advanced-filters" aria-selected="false">Advanced Filters</button>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div id="myTabContent">
-                                <div class="grid grid-cols-2 gap-4 md:grid-cols-3" id="brand" role="tabpanel" aria-labelledby="brand-tab">
-                                    <div class="space-y-2">
-                                        <h5 class="text-lg font-medium text-black dark:text-white">Accomodation type</h5>
 
-                                        <div class="flex items-center">
-                                            <input id="apple" type="checkbox" value="Boarding Houses" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="apple" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Boarding Houses
-                                            </label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="asus" type="checkbox" value="Hotels" class="checkbox h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="asus" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Hotels
-                                            </label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="acer" type="checkbox" value="Lodging Houses" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="acer" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Lodging Houses
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="space-y-2">
-                                        <h5 class="text-lg font-medium text-black dark:text-white">Near</h5>
-
-                                        <div class="flex items-center">
-                                            <input id="beats" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="beats" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">NORSU Campus 1</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="bose" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="bose" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Norsu Campus 2</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="benq" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="benq" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Bais City Science High School</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="bosch" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="bosch" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Bais City High School</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="brother" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="brother" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">LCC</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="biostar" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="biostar" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Centre of Bais</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="space-y-2">
-                                        <h5 class="text-lg font-medium text-black dark:text-white">Boarding house amenities</h5>
-
-                                        <div class="flex items-center">
-                                            <input id="canon" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="canon" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Private room</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="cisco" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="cisco" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Shared room
-                                            </label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="cowon" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="cowon" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Wifi</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="clevo" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="clevo" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Bathroom</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="corsair" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="corsair" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Laundry area</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="csl" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="csl" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Kitchen</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="space-y-2">
-                                        <h5 class="text-lg font-medium text-black dark:text-white">Hotels ammenities</h5>
-
-                                        <div class="flex items-center">
-                                            <input id="dell" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="dell" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Wifi</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="dogfish" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="dogfish" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Air conditioned</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="dyson" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="dyson" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Swimming pool
-                                            </label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="dobe" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="dobe" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Parking
-                                            </label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="digitus" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="digitus" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Complimentary breakfast</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="space-y-2">
-                                        <h5 class="text-lg font-medium text-black dark:text-white">Lodging House Amenities</h5>
-
-                                        <div class="flex items-center">
-                                            <input id="emetec" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="emetec" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Wifi
-                                            </label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="extreme" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="extreme" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Air conditioned
-                                            </label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="elgato" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="elgato" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Bathroom
-                                            </label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="emerson" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="emerson" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Kitchen</label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="emi" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                            <label for="emi" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Parking
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="space-y-4" id="advanced-filters" role="tabpanel" aria-labelledby="advanced-filters-tab">
-                                <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-                                    <div class="grid grid-cols-2 gap-3">
-                                        <div>
-                                            <label for="min-price" class="block text-sm font-medium text-gray-900 dark:text-white"> Min Price </label>
-                                            <input id="min-price" type="range" min="0" max="7000" value="300" step="1" class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700" />
-                                        </div>
-
-                                        <div>
-                                            <label for="max-price" class="block text-sm font-medium text-gray-900 dark:text-white"> Max Price </label>
-                                            <input id="max-price" type="range" min="0" max="7000" value="3500" step="1" class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700" />
-                                        </div>
-
-                                        <div class="col-span-2 flex items-center justify-between space-x-2">
-                                            <input type="number" id="min-price-input" value="300" min="0" max="7000" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 " placeholder="" required />
-
-                                            <div class="shrink-0 text-sm font-medium dark:text-gray-300">to</div>
-
-                                            <input type="number" id="max-price-input" value="3500" min="0" max="7000" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="" required />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-4 rounded-b p-4 dark:border-gray-600 md:p-5">
-                            <button id="show-results-btn" type="submit" class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-800">Show 0 results</button>
-                            <button type="reset" class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Reset</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
         </section>
+
     <?php } else { ?>
+
         <section class="bg-white" id="remove-content">
             <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
                 <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl ">Be a provider</h1>
@@ -406,6 +166,7 @@ $_SESSION['u_id'];
                 </div>
             </div>
         </section>
+
     <?php } ?>
 
 </body>
@@ -463,7 +224,6 @@ $_SESSION['u_id'];
                 },
             });
         }
-
     });
 
     $(document).ready(function() {
@@ -594,8 +354,6 @@ $_SESSION['u_id'];
                 }
             });
         });
-
-
 
     });
 </script>
