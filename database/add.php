@@ -9,6 +9,7 @@ if (isset($_POST['add_room'])) {
     $rprice = $_POST['rprice'];
     $rname = $_POST['rname'];
     $description = $_POST['description'];
+    
 
     $imagePaths = [];
     $uploadDir = "../uploads/";
@@ -58,6 +59,7 @@ if (isset($_POST['add_acc'])) {
     $type = $_POST['type'];
     $address = $_POST['address'];
     $description = $_POST['description'];
+    $labels = $_POST['labels']; 
 
     $imagePaths = [];
     $uploadDir = "../uploads/";
@@ -84,7 +86,7 @@ if (isset($_POST['add_acc'])) {
 
     $img = !empty($imagePaths) ? json_encode($imagePaths) : NULL;
 
-    $result = $load->request($id, $name, $price, $type, $address, $description, $img);
+    $result = $load->request($id, $name, $price, $type, $address, $description, $img, $labels);
     
     if ($result) {
         $response = array(

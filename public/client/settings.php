@@ -20,9 +20,9 @@ $result = $load->getUserInfo($user);
 
 </head>
 
-<body>
+<body class="settings-body">
 
-    <div class="antialiased bg-gray-50 ">
+    <div class="antialiased ">
 
         <nav class="custom-nav-bg sticky top-0 z-50 bg-white border-gray-200 dark:border-gray-700" style="z-index: 15;">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -66,104 +66,119 @@ $result = $load->getUserInfo($user);
             <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 ">Settings</h2>
         </div>
         <main class="p-4 md:ml-64 h-auto">
+
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="dark:border-gray-600 w-full h-auto text-center content-center justify-center flex">
 
-                    <button class="btnew w-full"><?php echo $result['number_of_acc'] ?> Accommodations
+                    <button id="buttonnew" class="btnew w-full"><?php echo $result['number_of_acc'] ?? null ?> Accommodations
                     </button>
                 </div>
                 <div class="dark:border-gray-600 w-full h-auto text-center content-center justify-center flex">
 
-                    <button class="btnew w-full"><?php echo $result['number_of_req'] ?> Requests
+                    <button id="buttonnew" class="btnew w-full"><?php echo $result['number_of_req'] ?? null  ?> Requests
                     </button>
                 </div>
-
             </div>
 
-            <div class="p-5 border-2 rounded-lg border-gray-300 dark:border-gray-600 h-auto mb-4">
+            <div class="grid lg:grid-cols-2 gap-6 mb-4">
                 <form>
-                    <div class="grid gap-6 mb-6 md:grid-cols-3">
+                    <div class="grid gap-6 mb-6 md:grid-cols-3 card-custom">
                         <div>
-                            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 ">First name</label>
-                            <input value="<?php echo $result['u_fname'] ?>" type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
+                            <label for="fname" class="block mb-2 text-sm font-medium text-gray-900 ">First name</label>
+                            <input value="<?php echo $result['u_fname'] ?? null ?>" type="text" id="fname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
                         </div>
                         <div>
-                            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 ">Last name</label>
-                            <input value="<?php echo $result['u_lname'] ?>" type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
+                            <label for="lname" class="block mb-2 text-sm font-medium text-gray-900 ">Last name</label>
+                            <input value="<?php echo $result['u_lname'] ?? null ?>" type="text" id="lname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
                         </div>
                         <div>
-                            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 ">Middle name</label>
-                            <input value="<?php echo $result['u_mname'] ?>" type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
+                            <label for="mname" class="block mb-2 text-sm font-medium text-gray-900 ">Middle name</label>
+                            <input value="<?php echo $result['u_mname'] ?? null ?>" type="text" id="mname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
                         </div>
                         <div>
                             <label for="company" class="block mb-2 text-sm font-medium text-gray-900 ">Company</label>
-                            <input value="<?php echo $result['p_name'] ?>" type="text" id="company" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Flowbite" required />
+                            <input value="<?php echo $result['p_name'] ?? null ?>" type="text" id="company" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Flowbite" required />
                         </div>
                         <div>
                             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 ">Phone number</label>
-                            <input value="<?php echo $result['pi_contact'] ?>" type="tel" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required />
+                            <input value="<?php echo $result['pi_contact'] ?? null ?>" type="tel" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required />
                         </div>
+                        <br>
+                        <button type="submit" id="change_input" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                     </div>
-                    <div class="mb-6">
-                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email address</label>
-                        <input value="<?php echo $result['u_email'] ?>" type="tel" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required />
-                    </div>
-                    <div class="mb-6">
-                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
-                        <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
-                    </div>
-                    <div class="mb-6">
-                        <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 ">Confirm password</label>
-                        <input type="password" id="confirm_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
-                    </div>
-                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                 </form>
-
-            </div>
-
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
-            <div class="grid grid-cols-2 gap-4">
-                <div
-                    class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                <div
-                    class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                <div
-                    class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                <div
-                    class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+                <form>
+                    <div class="grid gap-6 mb-6 md:grid-cols-3 card-custom">
+                        <div class="mb-6">
+                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email address</label>
+                            <input value="<?php echo $result['u_email'] ?? null ?>" type="tel" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required />
+                        </div>
+                        <div class="mb-6">
+                            <label for="npass" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
+                            <input type="password" id="npass" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        </div>
+                        <div class="mb-6">
+                            <label for="rpass" class="block mb-2 text-sm font-medium text-gray-900 ">Confirm password</label>
+                            <input type="password" id="rpass" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        </div>
+                        <button type="submit" id="update_pass" data-id="<?php echo $_SESSION['u_id'] ?? null ?>" class="update_pass text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                    </div>
+                </form>
             </div>
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <scrip src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
-        </script>
-        <script>
-            $(document).ready(function() {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
 
-                function changeInputs() {
-                    $('#change_input').text('Confirm').css(
-                        'background-color', 'green'
-                    )
-                    $('#input_hide').removeClass('hidden').fadeIn(1000);
-                    $('#input_hide2').removeClass('hidden').fadeIn(1000);
-                }
+            $('#update_pass').on('click', function(e) {
+                e.preventDefault();
 
-                $('#change_input').on('click', function() {
-
-
-                    $.ajax({
-                        url: '',
-                        method: 'POST',
-                        data: {
-
-                        },
-                        success: function() {
-                            changeInputs();
+                const id = $(this).data('id');
+                const npass = $('#npass').val();
+                const rpass = $('#rpass').val();
+                
+                $.ajax({
+                    url: '../../database/update.php',
+                    method: 'POST',
+                    data: {
+                        'update_password': true,
+                        id: id,
+                        npass: npass,
+                        rpass: rpass
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: response.success,
+                                icon: "success",
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: response.error,
+                                icon: "error",
+                                confirmButtonText: "OK"
+                            });
                         }
-                    })
-                });
-            })
-        </script>
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            title: "Error submitting the form: " + xhr.responseText,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        })
+                    }
+                })
+            });
+        })
+    </script>
 
 </html>

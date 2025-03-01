@@ -64,6 +64,17 @@ class Users extends Dbh
         }
     }
 
+    public function checkStatus($id)
+    {
+        $stmt = $this->connect()->prepare("SELECT r_status FROM tbl_registration WHERE u_id = ? ");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = $result->fetch_assoc();
+        return $data;
+    }
+
     public function viewById($id)
     {
         $stmt = $this->connect()->prepare("SELECT * FROM tbl_provider WHERE u_id = ? ");
@@ -105,10 +116,10 @@ class Users extends Dbh
         }
     }
 
-    public function request($id, $name, $price, $type, $address, $description, $img)
+    public function request($id, $name, $price, $type, $address, $description, $img, $labels)
     {
-        $stmt = $this->connect()->prepare("INSERT INTO tbl_provider (u_id, p_name, p_img, p_desc, p_price, p_type, p_address, p_status) VALUES(?,?,?,?,?,?,?,3)");
-        $stmt->bind_param("isssiss", $id, $name, $img, $description, $price, $type, $address);
+        $stmt = $this->connect()->prepare("INSERT INTO tbl_provider (u_id, p_name, p_inclusion, p_img, p_desc, p_price, p_type, p_address, p_date_added, p_status) VALUES(?,?,?,?,?,?,?,?,NOW(),3)");
+        $stmt->bind_param("issssiss", $id, $name, $labels, $img, $description, $price, $type, $address);
 
         $result = $stmt->execute();
         return $result;
@@ -116,7 +127,7 @@ class Users extends Dbh
 
     public function addRoom($pid, $uid, $rprice, $rname, $comp, $description, $img)
     {
-        $stmt = $this->connect()->prepare("INSERT INTO tbl_rooms (p_id, u_id, tr_name, tr_images, tr_price, tr_description, tr_date_added) VALUES(?,?,?,?,?,?,NOW())");
+        $stmt = $this->connect()->prepare("INSERT INTO tbl_rooms (p_id, u_id, tr_name, tr_images, tr_price, tr_description, tr_date_added, tr_status) VALUES(?,?,?,?,?,?,NOW(),1)");
         $stmt->bind_param("iissis", $pid, $uid, $rname, $img, $rprice, $description);
 
         $result = $stmt->execute();
@@ -373,5 +384,16 @@ class Users extends Dbh
         $items = $result->fetch_assoc();
 
         return $items;
+    }
+
+    public function updateUserPassword($id, $hashedPassword)
+    {
+        $stmt = $this->connect()->prepare("UPDATE tbl_users SET u_pass = ? WHERE u_id = ?");
+
+        $stmt->bind_param("si", $hashedPassword, $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result;
     }
 }

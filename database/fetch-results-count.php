@@ -1,43 +1,44 @@
 <?php
-
-require_once('connection.php');
+require_once('../database/connection.php');
 $dbh = new Dbh();
 $conn = $dbh->connect();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['filters'])) {
-    $filters = $_POST['filters'];
+if (isset($_POST['filters'])) {
+    $filters = $_POST['filters']; 
 
-    // Create placeholders for query
-    $placeholders = implode(',', array_fill(0, count($filters), '?'));
+    file_put_contents('debug.log', print_r($filters, true), FILE_APPEND);
 
-    // Prepare SQL query
-    $query = "SELECT COUNT(*) AS count FROM tbl_provider WHERE p_location IN ($placeholders)";
-    $stmt = $conn->prepare($query);
+    if (!empty($filters)) {
 
-    if (!$stmt) {
-        echo json_encode(['error' => 'Query preparation failed: ' . $conn->error]);
-        exit;
+        $conditions = array_fill(0, count($filters), "JSON_SEARCH(p_inclusion, 'one', ?) IS NOT NULL");
+        $query = "SELECT COUNT(*) as count FROM tbl_provider WHERE p_status = 1 AND p_inclusion IS NOT NULL AND p_inclusion != '' AND JSON_VALID(p_inclusion) AND (" . implode(" OR ", $conditions) . ")";
+
+        $stmt = $conn->prepare($query);
+        if ($stmt === false) {
+            die(json_encode(['count' => null, 'error' => "Query preparation failed: " . $conn->error]));
+        }
+
+        $types = str_repeat('s', count($filters));
+        $stmt->bind_param($types, ...$filters);
+
+        if (!$stmt->execute()) {
+            die(json_encode(['count' => null, 'error' => "Query execution failed: " . $stmt->error]));
+        }
+
+        $result = $stmt->get_result();
+        if ($result === false) {
+            die(json_encode(['count' => null, 'error' => "get_result() failed: " . $stmt->error]));
+        }
+
+        $row = $result->fetch_assoc();
+        $count = $row['count'];
+
+        echo json_encode(['count' => $count]);
+    } else {
+        echo json_encode(['count' => 0]);
     }
-
-    // Create parameter types string (all "s" for strings)
-    $types = str_repeat('s', count($filters));
-
-    // Bind parameters dynamically
-    $stmt->bind_param($types, ...$filters);
-
-    // Execute query
-    if (!$stmt->execute()) {
-        echo json_encode(['error' => 'Query execution failed: ' . $stmt->error]);
-        exit;
-    }
-
-    $stmt->bind_result($count);
-    $stmt->fetch();
-    $stmt->close();
-    $conn->close();
-
-    // Return JSON response
-    echo json_encode(['count' => $count]);
 } else {
-    echo json_encode(['error' => 'Invalid request or empty filters']);
+    echo json_encode(['count' => 0, 'error' => "Invalid request."]);
 }
+
+?>

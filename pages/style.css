@@ -1,21 +1,49 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Freeman&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Itim&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lobster&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-@media screen and (max-width: 430px){
-    .custom-size nav ol li a{
+html,
+body {
+    min-height: 100%;
+    scroll-behavior: smooth;
+}
+input{}
+body {
+    height: 100vh;
+}
+
+@media screen and (max-width: 430px) {
+    .custom-size nav ol li a {
         font-size: .8rem;
     }
 }
 
+.card-custom {
+    font-weight: 500;
+    padding: 1rem;
+    border-radius: 5px;
+    transition: ease-in-out 0.3s;
+    background: rgba(255, 255, 255, 0.25);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    -webkit-box-shadow: 3px 3px 10px 3px #ddd;
+-moz-box-shadow: 3px 3px 10px 3px #ddd;
+box-shadow: 3px 3px 10px 3px #ddd;
+}
 
-body{
+.card-custom:hover {
+    transform: scale(1.05);
+}
+
+body {
     height: 100dvh;
 }
 
-.custom-nav-bg{
+.custom-nav-bg {
     background-color: #191970;
 }
 
-nav ol li a, nav a, div ul li a, #dropdownNavbarLink, .add-modal-custom-text, button{
+* {
     font-family: "Bricolage Grotesque", serif;
     font-optical-sizing: auto;
     font-weight: 700;
@@ -33,7 +61,9 @@ nav ol li a, nav a, div ul li a, #dropdownNavbarLink, .add-modal-custom-text, bu
 } */
 
 @media screen and (max-width: 460px) {
-    .logo-text, .logotext {
+
+    .logo-text,
+    .logotext {
         font-size: 1rem;
         /* display: none; */
     }
@@ -49,23 +79,34 @@ nav ol li a, nav a, div ul li a, #dropdownNavbarLink, .add-modal-custom-text, bu
 
 .masonry-grid {
     column-count: 1;
-    column-gap: 15px; /* Reduce the gap for better fit */
-    padding: 3px; /* Small padding for aesthetics */
+    column-gap: 15px;
+    /* Reduce the gap for better fit */
+    padding: 3px;
+    /* Small padding for aesthetics */
 }
+
 @media (min-width: 300px) {
-    .masonry-grid { column-count: 1; }
+    .masonry-grid {
+        column-count: 1;
+    }
 }
 
 @media (min-width: 410px) {
-    .masonry-grid { column-count: 2; }
+    .masonry-grid {
+        column-count: 2;
+    }
 }
 
 @media (min-width: 640px) {
-    .masonry-grid { column-count: 3; }
+    .masonry-grid {
+        column-count: 3;
+    }
 }
 
 @media (min-width: 768px) {
-    .masonry-grid { column-count: 3; }
+    .masonry-grid {
+        column-count: 3;
+    }
 }
 
 
@@ -77,7 +118,7 @@ nav ol li a, nav a, div ul li a, #dropdownNavbarLink, .add-modal-custom-text, bu
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
-    
+
     /* Prevent breaking */
     break-inside: avoid;
 }
@@ -92,4 +133,51 @@ nav ol li a, nav a, div ul li a, #dropdownNavbarLink, .add-modal-custom-text, bu
     height: auto;
     display: block;
     border-radius: 8px;
+}
+
+/* From Uiverse.io by nima-mollazadeh */
+#show-more-btn {
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    position: relative;
+    text-decoration: none;
+    color: #fff;
+    background: linear-gradient(45deg, #0ce39a, #69007f, #fc0987);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+#show-more-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+#show-more-btn::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: #272727;
+    border-radius: 9px;
+    transition: 0.5s;
+}
+
+#show-more-btn:hover::before {
+    opacity: 0.7;
+}
+
+#show-more-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0px;
+    background: linear-gradient(45deg, #0ce39a, #69007f, #fc0987);
+    border-radius: 9px;
+    transition: 0.5s;
+    opacity: 0;
+    filter: blur(20px);
+}
+
+#show-more-btn:hover:after {
+    opacity: 1;
 }

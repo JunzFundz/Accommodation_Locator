@@ -29,7 +29,7 @@
                     <div class="col-span-2 sm:col-span-1">
                         <label for="category" class="block mb-2 text-sm font-medium text-gray-900 ">Accommodation Type</label>
                         <select id="type" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:border-gray-500 dark:placeholder-gray-400  dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option selected="bh">Boarding House</option>
+                            <option selected value="bh">Boarding House</option>
                             <option value="hs">Hotels</option>
                             <option value="lh">Lodging Houses</option>
                         </select>
@@ -50,6 +50,152 @@
                             accept="image/*"
                             multiple>
 
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="beats" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="beats" class="ml-2 text-sm font-medium text-gray-900 ">NORSU Campus 1</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="bose" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="bose" class="ml-2 text-sm font-medium text-gray-900 ">Norsu Campus 2</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="benq" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="benq" class="ml-2 text-sm font-medium text-gray-900 ">Bais City Science High School</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="bosch" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="bosch" class="ml-2 text-sm font-medium text-gray-900 ">Bais City High School</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="brother" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="brother" class="ml-2 text-sm font-medium text-gray-900 ">LCC</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="biostar" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="biostar" class="ml-2 text-sm font-medium text-gray-900 ">Centre of Bais</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="canon" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="canon" class="ml-2 text-sm font-medium text-gray-900 ">Private room</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="cisco" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="cisco" class="ml-2 text-sm font-medium text-gray-900 ">
+                            Shared room
+                        </label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="cowon" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="cowon" class="ml-2 text-sm font-medium text-gray-900 "> Wifi</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="clevo" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="clevo" class="ml-2 text-sm font-medium text-gray-900 "> Bathroom</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="corsair" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="corsair" class="ml-2 text-sm font-medium text-gray-900 "> Laundry area</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="csl" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="csl" class="ml-2 text-sm font-medium text-gray-900 ">Kitchen</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="dell" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="dell" class="ml-2 text-sm font-medium text-gray-900 ">Wifi</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="dogfish" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="dogfish" class="ml-2 text-sm font-medium text-gray-900 "> Air conditioned</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="dyson" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="dyson" class="ml-2 text-sm font-medium text-gray-900 ">
+                            Swimming pool
+                        </label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="dobe" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="dobe" class="ml-2 text-sm font-medium text-gray-900 ">
+                            Parking
+                        </label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="digitus" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="digitus" class="ml-2 text-sm font-medium text-gray-900 "> Complimentary breakfast</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="emetec" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="emetec" class="ml-2 text-sm font-medium text-gray-900 ">
+                            Wifi
+                        </label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="extreme" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="extreme" class="ml-2 text-sm font-medium text-gray-900 ">
+                            Air conditioned
+                        </label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="elgato" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="elgato" class="ml-2 text-sm font-medium text-gray-900 ">
+                            Bathroom
+                        </label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="emerson" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="emerson" class="ml-2 text-sm font-medium text-gray-900 "> Kitchen</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="emi" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                        <label for="emi" class="ml-2 text-sm font-medium text-gray-900 ">
+                            Parking
+                        </label>
                     </div>
                 </div>
                 <button type="submit" data-id="<?php echo $_SESSION['u_id']; ?>" class="add-acc text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

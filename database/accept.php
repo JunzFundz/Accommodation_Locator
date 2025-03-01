@@ -4,8 +4,9 @@ $set = new Admin();
 
 if(isset($_POST['accept'])){
     $rid = $_POST['rid'];
+    $uid = $_POST['uid'];
 
-    $result = $set->setStatus($rid);
+    $result = $set->setStatus($rid, $uid);
 
     if($result){
         $response = array(

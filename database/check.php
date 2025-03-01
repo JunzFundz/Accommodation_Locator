@@ -9,6 +9,7 @@ if (isset($_SESSION['u_id'])) {
     if (filter_var($id, FILTER_VALIDATE_INT)) {
         $result = $load->searchId($id);
         $data = $load->viewById($id);
+        $checkStatus = $load->checkStatus($id);
 
         return true;
     }

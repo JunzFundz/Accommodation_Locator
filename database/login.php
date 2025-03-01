@@ -18,6 +18,14 @@ if (isset($_POST['login-user'])) {
         $response = array(
             'error' => "Account not found",
         );
+    } else if ($result === 3) {
+        $response = array(
+            'error' => "Account is deactivated",
+        );
+    } else if ($result === 4) {
+        $response = array(
+            'error' => "Account not verified",
+        );
     } else {
         $response = array(
             'redirect' => $result

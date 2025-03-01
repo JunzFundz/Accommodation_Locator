@@ -21,6 +21,7 @@ if (isset($_GET['id']) && isset($_GET['number'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Document</title>
 </head>
 
@@ -87,6 +88,14 @@ if (isset($_GET['id']) && isset($_GET['number'])) {
                             <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
                                 <i class="fa-solid fa-phone"></i> <a href="<?= htmlspecialchars($results['p_link']); ?>"><?= htmlspecialchars($results['pi_contact'] ?? 'N/A'); ?></a>
                             </p>
+                            <p class="mb-4 text-lg font-bold">
+                                <a href="#" class="click_deactivate text-red-500" data-pid="<?= htmlspecialchars($results['p_id']); ?>" data-uid="<?= htmlspecialchars($results['u_id']); ?>">
+                                    Deactivate
+                                </a>
+                                <a href="#" class="click_activate text-green-500" data-pid="<?= htmlspecialchars($results['p_id']); ?>" data-uid="<?= htmlspecialchars($results['u_id']); ?>">
+                                    Activate
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </section>
@@ -137,8 +146,86 @@ if (isset($_GET['id']) && isset($_GET['number'])) {
         </div>
     </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).on('click', '.click_activate', function(e) {
+            e.preventDefault();
+
+            const pid = $(this).data('pid');
+            const uid = $(this).data('uid');
+
+            $.ajax({
+                url: '../../database/admin-auth.php',
+                type: 'post',
+                data: {
+                    'activate': true,
+                    'uid': uid
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        Command: toastr["success"](response.success)
+                    }
+                    else {
+                        Command: toastr["error"](response.error)
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    alert('Error: getting data');
+                }
+            });
+        });
+
+        $(document).on('click', '.click_deactivate', function(e) {
+            e.preventDefault();
+
+            const pid = $(this).data('pid');
+            const uid = $(this).data('uid');
+
+            $.ajax({
+                url: '../../database/admin-auth.php',
+                type: 'post',
+                data: {
+                    'deactivate': true,
+                    'uid': uid
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        Command: toastr["success"](response.success)
+                    }
+                    else {
+                        Command: toastr["error"](response.error)
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    alert('Error: getting data');
+                }
+            });
+        });
+
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "show",
+            "hideMethod": "fadeOut"
+        }
+    </script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 </html>

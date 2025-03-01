@@ -15,19 +15,6 @@ include __DIR__ . "/../../database/load-rooms.php";
 
 <body>
 
-    <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50" aria-label="Breadcrumb">
-        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-            <li class="inline-flex items-center">
-                <a href="home.php" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-700">
-                    <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-                    </svg>
-                    Go back
-                </a>
-            </li>
-        </ol>
-    </nav>
-
     <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4 p-5">
         <?php if (!empty($result)) : ?>
             <?php foreach ($result as $row) : ?>

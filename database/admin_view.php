@@ -16,6 +16,7 @@ if (isset($_POST['check'])) {
                     <div class="-my-4 divide-y divide-gray-200 ">
 
                         <input hidden id="rid" value="<?= $result['r_id'] ?>">
+                        <input hidden id="uid" value="<?= $result['u_id'] ?>">
 
                         <div class="flex flex-col gap-2 py-4 sm:gap-6 sm:flex-row sm:items-center">
                             <p class="w-32 text-sm font-normal text-gray-500 sm:text-right dark:text-gray-700 shrink-0">

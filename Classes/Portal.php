@@ -16,29 +16,28 @@ class Signup extends Dbh
     public function forgotPassword($email, $npass)
     {
         $conn = $this->connect();
-    
+
         $checkStmt = $conn->prepare("SELECT u_email FROM tbl_users WHERE u_email = ?");
         $checkStmt->bind_param("s", $email);
         $checkStmt->execute();
         $checkStmt->store_result();
-    
+
         if ($checkStmt->num_rows === 0) {
             return 2; // Account not found
         }
-    
+
         $hashedPassword = password_hash($npass, PASSWORD_DEFAULT);
-    
+
         // Step 3: Update the password
         $stmt = $conn->prepare("UPDATE tbl_users SET u_pass = ? WHERE u_email = ?");
         $stmt->bind_param("ss", $hashedPassword, $email);
-        
+
         if ($stmt->execute()) {
             return true;
         }
-    
+
         return false;
     }
-    
 
     public function signup($fname, $lname, $mname, $email, $hashedPassword)
     {
@@ -56,7 +55,7 @@ class Signup extends Dbh
 
         session_start();
 
-        $stmt = $conn->prepare("INSERT INTO tbl_users (u_fname, u_lname, u_mname, u_email, u_pass, u_otp, u_otp_created, u_verified, u_date_created) VALUES (?,?,?,?,?,?,NOW(),'no',NOW())");
+        $stmt = $conn->prepare("INSERT INTO tbl_users (u_fname, u_lname, u_mname, u_email, u_pass, u_otp, u_otp_created, u_verified, u_date_created,u_status) VALUES (?,?,?,?,?,?,NOW(),'no',NOW(),2)");
 
         if (!$stmt) {
             return 2;
@@ -134,7 +133,7 @@ class Signup extends Dbh
 
     public function setVerified($email, $id)
     {
-        $stmt = $this->connect()->prepare("UPDATE tbl_users SET u_verified = 'yes' WHERE u_email = ? AND u_id = ?");
+        $stmt = $this->connect()->prepare("UPDATE tbl_users SET u_verified = 'yes', u_status = 1 WHERE u_email = ? AND u_id = ?");
         $stmt->bind_param("si", $email, $id);
         $stmt->execute();
         return $stmt->get_result();
@@ -163,20 +162,31 @@ class Login extends Dbh
     {
         session_start();
 
-        $stmt = $this->connect()->prepare("SELECT u_id, u_email, u_pass FROM tbl_users WHERE u_email = ? AND u_verified = 'yes'");
+        $stmt = $this->connect()->prepare("SELECT u_id, u_email, u_pass, u_verified, u_status FROM tbl_users WHERE u_email = ?");
         $stmt->bind_param('s', $email);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+                $u_status = $row["u_status"];
+                $verify = $row["u_verified"];
                 $stored_password = $row["u_pass"];
+
+                if ($verify == 'no') {
+                    return 4;
+                }
+
+                if ($u_status === 3) {
+                    error_log("Login attempt blocked for user with status 3.");
+                    return 3;
+                }
+
                 if (password_verify($password, $stored_password)) {
                     $_SESSION['u_id'] = $row["u_id"];
                     $_SESSION['u_email'] = $row["u_email"];
 
                     $redirect = ($_SESSION['u_id'] === 72) ? '../public/admin/home.php' : '../public/client/home.php';
-
                     return $redirect;
                 } else {
                     return 1;

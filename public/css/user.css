@@ -14,17 +14,15 @@ body {
     background-color: #191970;
 }
 
-nav ol li a,
-nav a,
-div ul li a,
-#dropdownNavbarLink,
-.add-modal-custom-text,
-input
-a {
+*{
     font-family: "Bricolage Grotesque", serif;
     font-optical-sizing: auto;
     font-weight: 700;
     font-style: normal;
+}
+.custom-p-font{
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
 }
 
 .masonry-grid {
@@ -85,4 +83,26 @@ a {
     border-radius: 8px;
 }
 
+.home-bg {
+    background-image: radial-gradient(circle, #5275a8, #009ec8, #00c6c7, #6ae7a9, #dafe89);
+}
 
+.card-custom label {
+    color: rgb(60, 60, 60);
+    font-weight: 700;
+}
+
+.card-custom {
+    font-weight: 500;
+    padding: 1rem;
+    border-radius: 5px;
+    transition: ease-in-out 0.3s;
+    background: rgba(255, 255, 255, 0.25);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+.card-custom:hover {
+    backdrop-filter: blur(8px);
+}

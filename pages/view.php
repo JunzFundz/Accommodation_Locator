@@ -4,11 +4,12 @@ include('../Classes/Users.php');
 
 if (isset($_GET['number'])) {
     $id = $_GET['number'];
-    
+    $pid = $_GET['number'];
+
     $show = new Users();
     $result = $show->showItem($id);
+    $rooms = $show->showRooms($pid);
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -25,11 +26,11 @@ if (isset($_GET['number'])) {
 </head>
 
 <body>
-
+    <!-- Log in modal -->
     <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+            <div class="relative rounded-lg shadow-sm dark:bg-gray-700 card-custom">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -44,7 +45,7 @@ if (isset($_GET['number'])) {
                 </div>
                 <!-- Modal body -->
                 <div class="p-4 md:p-5">
-                    <form class="space-y-4" action="../database/login.php">
+                    <form class="space-y-4">
                         <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                             <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="youremail@gmail.com" required />
@@ -54,13 +55,7 @@ if (isset($_GET['number'])) {
                             <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
                         </div>
                         <div class="flex justify-between">
-                            <div class="flex items-start">
-                                <div class="flex items-center h-5">
-                                    <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
-                                </div>
-                                <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
-                            </div>
-                            <a href="#" class="text-sm text-blue-700 hover:underline dark:text-blue-500">Lost Password?</a>
+                            <a href="forgot-password.php" class="text-sm text-blue-700 hover:underline dark:text-blue-500">Lost Password?</a>
                         </div>
                         <button type="submit" class="log-in w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login to your account</button>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
@@ -121,43 +116,97 @@ if (isset($_GET['number'])) {
                 <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
                     <i class="fa-solid fa-phone"></i> <a href="<?= htmlspecialchars($result['p_link']); ?>"><?= htmlspecialchars($result['p_address'] ?? 'N/A'); ?></a>
                 </p>
-                <a href="#" class="inline-flex text-white bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4">Back to Homepage</a>
             </div>
         </div>
     </section>
 
-    <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white antialiased">
-        <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
-            <article class="mx-auto w-full format format-sm sm:format-base lg:format-lg format-blue ">
+    <section class="view-tabs-rooms antialiased">
+        <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
+            <p class="lead text-gray-900 pb-6"><?= htmlspecialchars($result['p_desc'] ?? 'N/A'); ?></p>
+            <div class="lg:grid lg:grid-cols-1 lg:gap-8 xl:gap-16">
+                <div class="masonry-grid">
+                    <?php if (!empty($result) && isset($result['p_img']) && !empty($result['p_img'])):
+                        $images = json_decode($result['p_img'], true);
 
-                <p class="lead text-gray-900"><?= htmlspecialchars($result['p_desc'] ?? 'N/A'); ?></p>
-                <figure>
-                    <div class="masonry-grid">
-                        <?php if (!empty($result) && isset($result['p_img']) && !empty($result['p_img'])):
-                            $images = json_decode($result['p_img'], true);
+                        if (!is_array($images)) {
+                            echo '<p style="text-align: center; color: gray;">Invalid image data.</p>';
+                        } else {
+                            foreach ($images as $index => $image): ?>
 
-                            if (!is_array($images)) {
-                                echo '<p style="text-align: center; color: gray;">Invalid image data.</p>';
-                            } else {
-                                foreach ($images as $index => $image): ?>
+                                <!-- Masonry Item -->
+                                <div class="masonry-item">
+                                    <img src="../uploads/<?= htmlspecialchars(trim($image)) ?>"
+                                        alt="Image <?= $index + 1 ?>">
+                                </div>
 
-                                    <!-- Masonry Item -->
-                                    <div class="masonry-item">
-                                        <img src="../uploads/<?= htmlspecialchars(trim($image)) ?>"
-                                            alt="Image <?= $index + 1 ?>">
-                                    </div>
+                            <?php endforeach; ?>
+                        <?php }
+                    else: ?>
+                        <p style="text-align: center; color: gray;">No images available.</p>
+                    <?php endif; ?>
+                </div>
 
-                                <?php endforeach; ?>
-                            <?php }
-                        else: ?>
-                            <p style="text-align: center; color: gray;">No images available.</p>
-                        <?php endif; ?>
-                    </div>
-                    <figcaption>Digital art by Anonymous</figcaption>
-                </figure>
-            </article>
+            </div>
         </div>
-    </main>
+
+        <div class="mx-auto max-w-screen-sm text-center mb-8 lg:mb-5 mt-5">
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900">Rooms</h2>
+        </div>
+
+        <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
+            <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4 p-5">
+                <?php if (!empty($rooms)) : ?>
+                    <?php foreach ($rooms as $row) : ?>
+                        <?php
+                        $images = json_decode($row['tr_images'], true);
+                        $firstImage = (!empty($images) && is_array($images)) ? htmlspecialchars($images[0], ENT_QUOTES, 'UTF-8') : 'default.jpg';
+                        ?>
+                        <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700">
+                            <br>
+                            <div class="h-56 w-full">
+                                <a href="room.php?number=<?= $row['tr_id'] ?> && name=<?= $row['p_name'] ?>">
+                                    <img class="mx-auto h-full " src="../uploads/<?php echo $firstImage; ?>" alt="Property Image" />
+                                </a>
+                            </div>
+                            <div class="pt-6">
+                                <a href="room.php?number=<?= $row['tr_id'] ?> && name=<?= $row['p_name'] ?>" class="text-lg font-semibold leading-tight text-gray-900 hover:underline "><?php echo $row['tr_name'] ?></a>
+
+                                <ul class="mt-2 flex items-center gap-4">
+                                    <li class="flex items-center gap-2">
+                                        <p class="text-sm font-medium"><?php echo $row['p_address'] ?></p>
+                                    </li>
+                                </ul>
+
+                                <div class="mt-4 flex items-center justify-between gap-4">
+                                    <p class="text-2xl font-extrabold leading-tight">₱<?php echo number_format($row['tr_price']) ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <p class="text-center text-red-500">No rooms available.</p>
+                <?php endif; ?>
+
+            </div>
+        </div>
+
+        <section style="padding-inline: 2rem;">
+            <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+                <div class="w-full h-0 relative" style="padding-bottom: 56.25%;">
+                    <iframe class="absolute top-0 left-0 w-full h-full"
+                        src="<?php echo htmlspecialchars($result['p_link']); ?>"
+                        allowfullscreen
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+                <h2 class="mb-4 text-4xl tracking-tight font-extrabold ">
+                    <?php echo htmlspecialchars($result['p_address']); ?>
+                </h2>
+            </div>
+        </section>
+
+    </section>
 
 </body>
 
@@ -202,7 +251,7 @@ if (isset($_GET['number'])) {
             const password = $('#password').val();
 
             $.ajax({
-                url: '',
+                url: '../database/login.php',
                 method: 'POST',
                 data: {
                     'login-user': true,
