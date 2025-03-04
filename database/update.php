@@ -2,6 +2,23 @@
 include(__DIR__ . '/../Classes/Users.php');
 $update = new Users();
 
+if (isset($_POST['add_prof']) && isset($_FILES['pic'])) {
+    $id = $_POST['id'];
+    $pic = $_FILES['pic']; // Get uploaded file
+
+    $result = $update->uploadProfile($id, $pic); // Pass both ID & file
+
+    if ($result) {
+        $response = array('success' => "Profile picture uploaded successfully");
+    } else {
+        $response = array('error' => "An error occurred while uploading");
+    }
+
+    echo json_encode($response);
+    exit;
+}
+
+
 if (isset($_POST['delete'])) {
     $id = $_POST['id'];
 

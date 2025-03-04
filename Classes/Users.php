@@ -11,7 +11,7 @@ class Users extends Dbh
         if (!$conn) {
             die("Database connection failed: " . $conn->connect_error);
         }
-        
+
         $sql = "SELECT u.*, p.*, r.*, 
             COUNT(p.u_id) AS number_of_acc, 
             SUM(CASE WHEN r.p_status = 3 THEN 1 ELSE 0 END) AS number_of_req
@@ -20,18 +20,17 @@ class Users extends Dbh
         INNER JOIN tbl_provider r ON r.u_id = p.u_id
         WHERE u.u_id = ?
         GROUP BY u.u_id";
-        
+
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
-            die("Query preparation failed: " . $conn->error); // Prints MySQL error
+            die("Query preparation failed: " . $conn->error);
         }
-        
+
         $stmt->bind_param("i", $user);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         return $result->num_rows > 0 ? $result->fetch_assoc() : null;
-        
     }
 
     public function loadInfo($id)
@@ -366,9 +365,9 @@ class Users extends Dbh
         $stmt->bind_param("i", $id);
         $stmt->execute();
 
-        $this->deleteRoomProvider($id);
-
-        return $stmt->affected_rows;
+        if ($stmt->affected_rows) {
+            return $this->deleteRoomProvider($id);
+        }
     }
 
     public function showItem($id)
@@ -386,14 +385,51 @@ class Users extends Dbh
         return $items;
     }
 
+    public function showroomById($id)
+    {
+        $stmt = $this->connect()->prepare("SELECT * FROM tbl_rooms WHERE tr_id = ?");
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $items = $result->fetch_assoc();
+
+        return $items;
+    }
+
     public function updateUserPassword($id, $hashedPassword)
     {
         $stmt = $this->connect()->prepare("UPDATE tbl_users SET u_pass = ? WHERE u_id = ?");
 
         $stmt->bind_param("si", $hashedPassword, $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+         $result = $stmt->execute();
 
         return $result;
+    }
+
+    public function uploadProfile($id, $file)
+    {
+        $uploadDir = __DIR__ . "/../uploads/";
+        $fileName = basename($file["name"]);
+        $targetFilePath = $uploadDir . $fileName;
+
+        $allowedTypes = array('jpg', 'jpeg', 'png', 'gif');
+        $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+
+        if (!in_array($fileType, $allowedTypes)) {
+            return false;
+        }
+
+        if (move_uploaded_file($file["tmp_name"], $targetFilePath)) {
+
+            $stmt = $this->connect()->prepare("UPDATE tbl_users SET u_profile = ? WHERE u_id = ?");
+            $stmt->bind_param("si", $fileName, $id);
+            $stmt->execute();
+
+            return $stmt->affected_rows > 0;
+        }
+
+        return false;
     }
 }

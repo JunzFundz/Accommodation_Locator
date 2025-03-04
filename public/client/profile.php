@@ -20,7 +20,49 @@ $result = $load->getUserInfo($user);
 
 </head>
 
-<body class="settings-body">
+<body class="">
+
+    <!-- Main modal -->
+    <div id="up-modal" tabindex="-1" aria-hidden="true" class="add-modal-custom-text hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full" style="z-index: 1;">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow-sm ">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 ">
+                        Profile picture
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="up-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <form class="p-4 md:p-5">
+
+                    <div class="flex items-center justify-center w-full">
+                        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                </svg>
+                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                            </div>
+                            <input id="dropzone-file" type="file" class="hidden" />
+                        </label>
+                    </div>
+                    <br>
+                    <button type="submit" data-id="<?php echo $user ?>" class="add-prof text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Add
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <div class="antialiased ">
 
@@ -62,30 +104,36 @@ $result = $load->getUserInfo($user);
                 </div>
             </div>
         </nav>
-        <div class="mx-auto max-w-screen-sm pt-5 text-center mb-8 lg:mb-16">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 ">Settings</h2>
+
+        <div class="mx-auto max-w-screen-sm pt-5 text-center mb-3 lg:mb-5">
+            <h2 class="mb-1 text-2xl tracking-tight font-extrabold text-gray-900">Profile Settings</h2>
         </div>
-        <main class="p-4 md:ml-64 h-auto">
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="dark:border-gray-600 w-full h-auto text-center content-center justify-center flex">
-
-                    <button id="buttonnew" class="btnew w-full"><?php echo $result['number_of_acc'] ?? null ?> Accommodations
-                    </button>
-                </div>
-                <div class="dark:border-gray-600 w-full h-auto text-center content-center justify-center flex">
-
-                    <button id="buttonnew" class="btnew w-full"><?php echo $result['number_of_req'] ?? null  ?> Requests
-                    </button>
+        <section class="bg-white">
+            <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+                <div class="mx-auto max-w-screen-sm text-center">
+                    <h1 class="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 ">
+                        <center>
+                            <img src="../../uploads/<?php echo $result['u_profile'] ?>" style="width: 20%; border-radius: 50%; aspect-ratio: 2/2" alt="Flowbite Logo">
+                        </center>
+                    </h1>
+                    <p class="mb-4 text-lg font-light text-gray-500 dark:text-blue-600 cursor-pointer" data-modal-target="up-modal" data-modal-toggle="up-modal"  style="text-decoration:underline !important;">
+                        Change profile
+                    </p>
                 </div>
             </div>
+        </section>
 
-            <div class="grid lg:grid-cols-2 gap-6 mb-4">
+        <main class="p-4 md:ml-64 h-auto">
+
+            <div class="grid lg:grid-cols-2 gap-6 ">
                 <form>
+                    <h2 class=" text-2xl tracking-tight font-extrabold text-gray-900 ">Chance credentials</h2>
                     <div class="grid gap-6 mb-6 md:grid-cols-3 card-custom">
+
                         <div>
                             <label for="fname" class="block mb-2 text-sm font-medium text-gray-900 ">First name</label>
-                            <input value="<?php echo $result['u_fname'] ?? null ?>" type="text" id="fname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
+                            <input value="<?php echo $result['u_fname'] ?>" type="text" id="fname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
                         </div>
                         <div>
                             <label for="lname" class="block mb-2 text-sm font-medium text-gray-900 ">Last name</label>
@@ -108,6 +156,7 @@ $result = $load->getUserInfo($user);
                     </div>
                 </form>
                 <form>
+                    <h2 class=" text-2xl tracking-tight font-extrabold text-gray-900 ">Change password</h2>
                     <div class="grid gap-6 mb-6 md:grid-cols-3 card-custom">
                         <div class="mb-6">
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email address</label>
@@ -121,25 +170,27 @@ $result = $load->getUserInfo($user);
                             <label for="rpass" class="block mb-2 text-sm font-medium text-gray-900 ">Confirm password</label>
                             <input type="password" id="rpass" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                         </div>
-                        <button type="submit" id="update_pass" data-id="<?php echo $_SESSION['u_id'] ?? null ?>" class="update_pass text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                        <button type="submit" id="update_pass" data-id="<?php echo $_SESSION['u_id'] ?>" class="update_pass text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                     </div>
                 </form>
             </div>
         </main>
     </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
 
-            $('#update_pass').on('click', function(e) {
+            $('.update_pass').on('click', function(e) {
                 e.preventDefault();
 
                 const id = $(this).data('id');
                 const npass = $('#npass').val();
                 const rpass = $('#rpass').val();
-                
+
                 $.ajax({
                     url: '../../database/update.php',
                     method: 'POST',
@@ -178,6 +229,39 @@ $result = $load->getUserInfo($user);
                     }
                 })
             });
+
+            $('.add-prof').on('click', function() {
+                const id = $(this).data('id');
+                const pic = $('#dropzone-file')[0].files[0]; // Get file
+
+                if (!pic) {
+                    alert("Please select an image.");
+                    return;
+                }
+
+                let formData = new FormData();
+                formData.append('add_prof', true);
+                formData.append('id', id);
+                formData.append('pic', pic);
+
+                $.ajax({
+                    url: '../../database/update.php',
+                    method: 'POST',
+                    data: formData,
+                    processData: false, // Required for file upload
+                    contentType: false, // Required for file upload
+                    success: function(response) {
+                        let res = JSON.parse(response);
+                        if (res.success) {
+                            alert(res.success);
+                            location.reload();
+                        } else {
+                            alert(res.error);
+                        }
+                    }
+                });
+            });
+
         })
     </script>
 

@@ -29,6 +29,22 @@ class Admin extends Dbh
         return $result;
     }
 
+    public function countRequests()
+    {
+        $stmt = $this->connect()->query("SELECT COUNT(r_id) AS req FROM tbl_registration WHERE r_status = 'pending'");
+
+        $result = $stmt->fetch_assoc();
+        return $result;
+    }
+
+    public function countProp()
+    {
+        $stmt = $this->connect()->query("SELECT COUNT(p_id) AS req FROM tbl_provider WHERE p_status = 2");
+
+        $result = $stmt->fetch_assoc();
+        return $result;
+    }
+
     public function viewIndividual($rid, $uid)
     {
         $stmt = $this->connect()->prepare("

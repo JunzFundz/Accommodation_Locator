@@ -24,6 +24,108 @@ foreach ($data as $datas) {
 </head>
 
 <body class="home-bg">
+
+    <!-- Main modal -->
+    <div id="change-password" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow-sm">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-700">
+                        Change password
+                    </h3>
+                    <button type="button" class="text-gray-700 bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="change-password">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">
+                    <form>
+                            <input value="<?php echo $_SESSION['u_email'] ?>" type="hidden" id="email"/>
+                        <div class="mb-6">
+                            <label for="npass" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
+                            <input type="password" id="npass" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        </div>
+                        <div class="mb-6">
+                            <label for="rpass" class="block mb-2 text-sm font-medium text-gray-900 ">Confirm password</label>
+                            <input type="password" id="rpass" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        </div>
+                    </form>
+
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="submit" id="update_pass" data-id="<?php echo $_SESSION['u_id'] ?? null ?>" class="update_pass text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bg-white border-gray-200 custom-nav-bg">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="home.php" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <img src="logo.png" class="h-8" alt="Flowbite Logo" />
+                <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">Flowbite</span>
+            </a>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-8 h-8 rounded-full" src="../../uploads/<?php echo htmlspecialchars($new['u_profile']) ?>" alt="user photo">
+                </button>
+
+                <!-- Dropdown menu -->
+                <div class="z-40 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm " id="user-dropdown">
+                    <div class="px-4 py-3">
+                        <span class="block text-sm text-gray-900 "><?php echo htmlspecialchars($_SESSION['u_email']) ?></span>
+                        <span class="block text-sm text-gray-500 truncate"></span>
+                    </div>
+                    <ul class="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <a href="profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">My profile</a>
+                        </li>
+                        <li>
+                            <a data-modal-target="change-password" data-modal-toggle="change-password" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Change password</a>
+                        </li>
+                        <li>
+                            <a href="logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <button data-collapse-toggle="navbar-user" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            </div>
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+                <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0">
+                    <li>
+                        <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Pricing</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
     <nav class="custom-nav-bg sticky top-0 z-50 bg-white border-gray-200 dark:border-gray-700" style="z-index: 11;">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -41,7 +143,7 @@ foreach ($data as $datas) {
                         <a href="home.php" class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">Home</a>
                     </li>
                     <li>
-                        <a href="service.php" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
+                        <a href="service.php" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
                     </li>
                     <li>
                         <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Options<svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -66,9 +168,16 @@ foreach ($data as $datas) {
     <section class="py-8 antialiased md:py-12 h-full">
         <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
 
+            <?php if (
+                !empty($checkStatus) && isset($checkStatus['r_status']) &&
+                ($checkStatus['r_status'] === 'pending' ||
+                    $checkStatus['r_status'] === 'declined' ||
+                    $checkStatus['r_status'] === 'deactivated')
+            ) : ?>
 
-            <?php if ($checkStatus['r_status'] === 'pending' || $checkStatus['r_status'] === 'declined' || $checkStatus['r_status'] === 'deactivated') : ?>
-            <?php else : ?>
+            <?php elseif (!empty($checkStatus) && isset($checkStatus['r_status']) && $checkStatus['r_status'] === "approved") : ?>
+
+
                 <div class="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
                     <div class="custom-size">
                         <nav class="flex" aria-label="Breadcrumb">
@@ -88,6 +197,10 @@ foreach ($data as $datas) {
                 </div>
             <?php endif; ?>
 
+            <div id="properties-container" class="p-3 mb-1 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
+
+            </div>
+
 
             <?php if ($result === true) { ?>
                 <?php if (!empty($data)) : ?>
@@ -99,38 +212,62 @@ foreach ($data as $datas) {
 
                             if ($row['p_status'] == 3) { ?>
 
-                                <div class="cursor-not-allowed relative rounded-lg border border-gray-200  p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                                <div class="cursor-not-allowed relative rounded-lg border border-gray-200  p-6 shadow-sm dark:border-gray-700 ">
                                     <div style="background-color: white; opacity: 40%" class="absolute inset-0 flex items-center justify-center z-10">
                                         <span class="text-gray-900 font-semibold text-lg">Under Validation</span>
                                     </div>
 
-                                    <div class="h-56 w-full opacity-60 pointer-events-none">
+                                    <div class="h-56 w-full">
                                         <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>">
                                             <img class="mx-auto h-full" src="../../uploads/<?php echo $firstImage; ?>" alt="Property Image" />
                                         </a>
                                     </div>
-
-                                    <div class="pt-6 opacity-60 pointer-events-none">
-                                        <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>"
-                                            class="text-lg font-semibold leading-tight text-gray-900 dark:text-white">
-                                            <?php echo htmlspecialchars($row['p_name']); ?>
+                                    <div class="pt-6">
+                                        <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>">
+                                            <?= htmlspecialchars($row['p_name']) ?>
                                         </a>
+                                        <ul class="mt-2 flex items-center gap-4">
+                                            <li class="flex items-center gap-2">
+                                                <p class="text-sm font-medium"><?= htmlspecialchars($row['p_address']) ?></p>
+                                            </li>
+                                        </ul>
+                                        <div class="mt-4 flex items-center justify-between gap-4">
+                                            <p class="text-2xl font-extrabold leading-tight">₱<?= number_format($row['p_price']) ?></p>
+                                            <button type="button" class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>">
+                                                    View in details
+                                                </a>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
 
                             <?php } else { ?>
 
-                                <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                                <div class="card-custom rounded-lg border border-gray-200 p-6 shadow-sm dark:border-gray-700">
                                     <div class="h-56 w-full">
                                         <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>">
-                                            <img class="mx-auto h-full " src="../../uploads/<?php echo $firstImage; ?>" alt="Property Image" />
+                                            <img class="mx-auto h-full" src="../../uploads/<?php echo $firstImage; ?>" alt="Property Image" />
                                         </a>
                                     </div>
                                     <div class="pt-6">
-                                        <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
-                                            <?php echo htmlspecialchars($row['p_name']); ?>
+                                        <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>">
+                                            <?= htmlspecialchars($row['p_name']) ?>
                                         </a>
+                                        <ul class="mt-2 flex items-center gap-4">
+                                            <li class="flex items-center gap-2">
+                                                <p class="text-sm font-medium"><?= htmlspecialchars($row['p_address']) ?></p>
+                                            </li>
+                                        </ul>
+                                        <div class="mt-4 flex items-center justify-between gap-4">
+                                            <p class="text-2xl font-extrabold leading-tight">₱<?= number_format($row['p_price']) ?></p>
+                                            <button type="button" class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                <a href="view.php?name=<?php echo $row['p_name'] ?>&type=<?php echo $row['p_type'] ?>&number=<?php echo $row['p_id'] ?>">
+                                                    View in details
+                                                </a>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -196,16 +333,63 @@ foreach ($data as $datas) {
         }
     });
     $(document).ready(function() {
+
+        $('#update_pass').on('click', function(e) {
+            e.preventDefault();
+
+            const id = $(this).data('id');
+            const npass = $('#npass').val();
+            const rpass = $('#rpass').val();
+
+            console.log(id, npass, rpass)
+
+            $.ajax({
+                url: '../../database/update.php',
+                method: 'POST',
+                data: {
+                    'update_password': true,
+                    id: id,
+                    npass: npass,
+                    rpass: rpass
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            title: response.success,
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: response.error,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: "Error submitting the form: " + xhr.responseText,
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    })
+                }
+            })
+        });
+
+
         $('input[type="checkbox"]').change(function() {
             if ($(this).is(':checked')) {
                 var labelText = $('label[for="' + $(this).attr('id') + '"]').text();
                 console.log("Checked Label:", labelText);
             }
         });
-    });
 
-
-    $(document).ready(function() {
         let selectedFilters = [];
 
         $(".checkbox").change(function() {
@@ -242,9 +426,6 @@ foreach ($data as $datas) {
                 },
             });
         }
-    });
-
-    $(document).ready(function() {
 
         $("#location-search").on("input", function() {
             let query = $(this).val();
@@ -384,8 +565,6 @@ foreach ($data as $datas) {
                 }
             });
         });
-
-
     });
 </script>
 
