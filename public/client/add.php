@@ -103,18 +103,6 @@
                     </div>
 
                     <div class="flex items-center">
-                        <input id="cowon" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                        <label for="cowon" class="ml-2 text-sm font-medium text-gray-900 "> Wifi</label>
-                    </div>
-
-                    <div class="flex items-center">
-                        <input id="clevo" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                        <label for="clevo" class="ml-2 text-sm font-medium text-gray-900 "> Bathroom</label>
-                    </div>
-
-                    <div class="flex items-center">
                         <input id="corsair" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                         <label for="corsair" class="ml-2 text-sm font-medium text-gray-900 "> Laundry area</label>
@@ -130,12 +118,6 @@
                         <input id="dell" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                         <label for="dell" class="ml-2 text-sm font-medium text-gray-900 ">Wifi</label>
-                    </div>
-
-                    <div class="flex items-center">
-                        <input id="dogfish" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                        <label for="dogfish" class="ml-2 text-sm font-medium text-gray-900 "> Air conditioned</label>
                     </div>
 
                     <div class="flex items-center">
@@ -161,14 +143,6 @@
                     </div>
 
                     <div class="flex items-center">
-                        <input id="emetec" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                        <label for="emetec" class="ml-2 text-sm font-medium text-gray-900 ">
-                            Wifi
-                        </label>
-                    </div>
-
-                    <div class="flex items-center">
                         <input id="extreme" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                         <label for="extreme" class="ml-2 text-sm font-medium text-gray-900 ">
@@ -183,13 +157,7 @@
                             Bathroom
                         </label>
                     </div>
-
-                    <div class="flex items-center">
-                        <input id="emerson" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                        <label for="emerson" class="ml-2 text-sm font-medium text-gray-900 "> Kitchen</label>
-                    </div>
-
+                    
                     <div class="flex items-center">
                         <input id="emi" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 

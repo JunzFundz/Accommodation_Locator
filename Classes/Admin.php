@@ -4,6 +4,27 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 class Admin extends Dbh
 {
+    public function getUserInfo2($id)
+    {
+        $conn = $this->connect();
+        if (!$conn) {
+            die("Database connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT * FROM tbl_users WHERE u_id = ?";
+
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0 ? $result->fetch_assoc() : null;
+    }
+    
     public function viewRequest()
     {
         $stmt = $this->connect()->query("

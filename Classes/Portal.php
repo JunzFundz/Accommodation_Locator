@@ -187,7 +187,9 @@ class Login extends Dbh
                     $_SESSION['u_email'] = $row["u_email"];
 
                     $redirect = ($_SESSION['u_id'] === 81) ? '../public/admin/home.php' : '../public/client/home.php';
+                    
                     return $redirect;
+
                 } else {
                     return 1;
                 }

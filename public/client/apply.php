@@ -13,7 +13,7 @@ $_SESSION['u_id'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
 
-    <title>Home</title>
+    <title>Apply</title>
 </head>
 
 <body>
@@ -58,7 +58,7 @@ $_SESSION['u_id'];
     </nav>
 
     <br><br><br>
-    
+
     <section class="bg-white">
         <div class="px-4 mx-auto max-w-4xl">
             <h2 class="mb-4 text-xl font-bold text-gray-900 ">Provider Form</h2>
@@ -97,7 +97,7 @@ $_SESSION['u_id'];
     </section>
 
     <section class="bg-white">
-        <div class="px-4 mx-auto max-w-4xl ">
+        <div class="px-4 mx-auto max-w-4xl">
             <h2 class="mb-4 text-xl font-bold text-gray-900 ">Address</h2>
             <form action="#">
                 <div class="grid gap-4 sm:grid-cols-3 sm:gap-6">
@@ -122,8 +122,34 @@ $_SESSION['u_id'];
                         <input type="text" name="name" id="zip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Zip code" required="">
                     </div>
                 </div>
-                <br>
-                <button type="button" id="submit-request" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+
+                <div class="flex items-center justify-center w-full py-5">
+                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-4 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500 text-red-400"><span class="font-semibold">Upload a front photo of your valid ID</span></p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </div>
+                        <input id="dropzone-file" type="file" class="hidden" />
+                    </label>
+                </div>
+
+                <div class="flex items-center justify-center w-full py-5">
+                    <label for="dropzone-file2" class="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-4 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500 text-red-400"><span class="font-semibold">Upload a back photo of your valid ID</span></p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </div>
+                        <input id="dropzone-file2" type="file" class="hidden" />
+                    </label>
+                </div>
+
+                <button type="button" id="submit-request" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 mb-10 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                     Apply
                 </button>
             </form>
@@ -155,6 +181,7 @@ $_SESSION['u_id'];
 
         $('#submit-request').on('click', function(e) {
             e.preventDefault();
+
             const id = '<?php echo $_SESSION['u_id'] ?>';
             const brgy = $('#brgy').val();
             const block = $('#block').val();
@@ -166,25 +193,45 @@ $_SESSION['u_id'];
             const lname = $('#lname').val();
             const mname = $('#mname').val();
             const contact = $('#contact').val();
+            const front = $('#dropzone-file')[0].files[0]; 
+            const back = $('#dropzone-file2')[0].files[0]; 
+
+            if (!brgy || !block || !street || !city || !zip || !gender || !fname || !lname || !contact) {
+                Swal.fire({
+                    title: "Please fill out all required fields!",
+                    icon: "warning",
+                    confirmButtonText: "OK"
+                });
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("apply", true);
+            formData.append("id", id);
+            formData.append("brgy", brgy);
+            formData.append("block", block);
+            formData.append("street", street);
+            formData.append("city", city);
+            formData.append("zip", zip);
+            formData.append("gender", gender);
+            formData.append("fname", fname);
+            formData.append("lname", lname);
+            formData.append("mname", mname);
+            formData.append("contact", contact);
+            if (front) {
+                formData.append("front", front); 
+            }
+            if (back) {
+                formData.append("back", back); 
+            }
 
             $.ajax({
                 url: '../../database/apply.php',
-                type: 'post',
+                type: 'POST',
                 dataType: 'json',
-                data: {
-                    'apply': true,
-                    id: id,
-                    brgy: brgy,
-                    block: block,
-                    street: street,
-                    city: city,
-                    zip: zip,
-                    gender: gender,
-                    fname: fname,
-                    lname: lname,
-                    mname: mname,
-                    contact: contact
-                },
+                processData: false, 
+                contentType: false, 
+                data: formData,
                 success: function(response) {
                     if (response.success) {
                         Swal.fire({
@@ -206,15 +253,15 @@ $_SESSION['u_id'];
                             title: response.error,
                             icon: "error",
                             confirmButtonText: "OK"
-                        })
+                        });
                     }
                 },
                 error: function(response) {
-                    console.log(response)
+                    console.log(response);
                 }
-            })
+            });
+        });
 
-        })
     })
 </script>
 

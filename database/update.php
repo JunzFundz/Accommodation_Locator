@@ -18,7 +18,6 @@ if (isset($_POST['add_prof']) && isset($_FILES['pic'])) {
     exit;
 }
 
-
 if (isset($_POST['delete'])) {
     $id = $_POST['id'];
 
@@ -89,3 +88,29 @@ if (isset($_POST['update_password'])) {
     echo json_encode($response);
     exit;
 }
+
+if (isset($_POST['update_pi_s'])) {
+    $id = $_POST['id'];
+    $fname = trim($_POST['fname']);
+    $lname = trim($_POST['lname']);
+    $mname = trim($_POST['mname']);
+    $phone = trim($_POST['phone']);
+    $email = trim($_POST['email']);
+    $brgy = trim($_POST['brgy']);
+    $block = trim($_POST['block']);
+    $street = trim($_POST['street']);
+    $city = trim($_POST['city']);
+    $zip = trim($_POST['zip']);
+
+    $result = $update->updateUserInfo($id, $fname, $lname, $mname, $phone, $email, $brgy, $block, $street, $city, $zip);
+
+    if ($result) {
+        $response = array('success' => "Information updated successfully");
+    } else {
+        $response = array('error' => "An error occurred while updating");
+    }
+
+    echo json_encode($response);
+    exit;
+}
+?>

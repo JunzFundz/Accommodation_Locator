@@ -1,5 +1,5 @@
 <?php
-include(__DIR__ . '/../Classes/Users.php');
+require_once(__DIR__ . '/../Classes/Users.php');
 
 $load = new Users();
 
@@ -12,6 +12,8 @@ if (isset($_SESSION['u_id'])) {
         $data = $load->viewById($id);
         $checkStatus = $load->checkStatus($id);
         $new = $load->getUserInfo($user);
+        $loads = $load->getUserInfo2($id);
+        $pp = $load->showPP($user);
 
         return true;
     }

@@ -8,6 +8,12 @@ if (isset($_POST['login-user'])) {
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $password = trim($_POST['password']);
 
+    if($email == ''){
+        $response = array(
+            'error' => "Empty email field",
+        );
+    }
+
     $result = $login->login($password, $email);
 
     if ($result === 1) {

@@ -5,6 +5,26 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 class Users extends Dbh
 {
+    public function getUserInfo2($id)
+    {
+        $conn = $this->connect();
+        if (!$conn) {
+            die("Database connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT * FROM tbl_users WHERE u_id = ?";
+
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0 ? $result->fetch_assoc() : null;
+    }
     public function getUserInfo($user)
     {
         $conn = $this->connect();
@@ -20,6 +40,26 @@ class Users extends Dbh
         INNER JOIN tbl_provider r ON r.u_id = p.u_id
         WHERE u.u_id = ?
         GROUP BY u.u_id";
+
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        $stmt->bind_param("i", $user);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0 ? $result->fetch_assoc() : null;
+    }
+    public function showPP($user)
+    {
+        $conn = $this->connect();
+        if (!$conn) {
+            die("Database connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT * FROM tbl_users where u_id = ?";
 
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
@@ -85,28 +125,28 @@ class Users extends Dbh
         return $user_data;
     }
 
-    public function apply($id, $fname, $lname, $mname, $brgy, $block, $street, $city, $zip, $gender, $contact)
+    public function apply($id, $fname, $lname, $mname, $brgy, $block, $street, $city, $zip, $gender, $contact, $frontPath, $backPath)
     {
         $stmt = $this->connect()->prepare("UPDATE tbl_users SET u_fname = ?, u_lname = ?, u_mname = ? WHERE u_id = ?");
         $stmt->bind_param("sssi", $fname, $lname, $mname, $id);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        $this->insertPersonalInfo($id, $brgy, $block, $street, $city, $zip, $gender, $contact);
+        $this->insertPersonalInfo($id, $brgy, $block, $street, $city, $zip, $gender, $contact, $frontPath, $backPath);
 
         return $result;
     }
 
-    public function insertPersonalInfo($id, $brgy, $block, $street, $city, $zip, $gender, $contact)
+    public function insertPersonalInfo($id, $brgy, $block, $street, $city, $zip, $gender, $contact, $frontPath, $backPath)
     {
         $status = 'pending';
 
-        $stmt = $this->connect()->prepare("INSERT INTO tbl_personal_info (u_id, pi_gender, pi_contact, pi_brgy, pi_block, pi_street, pi_city, pi_zip, pi_date_added) VALUES (?,?,?,?,?,?,?,?,NOW())");
+        $stmt = $this->connect()->prepare("INSERT INTO tbl_personal_info (u_id, pi_gender, pi_contact, pi_brgy, pi_block, pi_street, pi_city, pi_zip, pi_date_added,pi_status) VALUES (?,?,?,?,?,?,?,?,NOW(),3)");
         $stmt->bind_param("issssssi", $id, $gender, $contact, $brgy, $block, $street, $city, $zip);
         $stmt->execute();
 
         $pid = $stmt->insert_id;
-        $result = $this->connect()->query("INSERT INTO tbl_registration (u_id, pi_id, r_date_requested, r_status) VALUES ('$id', '$pid', NOW(), '$status')");
+        $result = $this->connect()->query("INSERT INTO tbl_registration (u_id, r_id_front, r_id_back, pi_id, r_date_requested, r_status) VALUES ('$id','$frontPath', '$backPath', '$pid', NOW(), '$status')");
 
         if ($result) {
             return $result;
@@ -387,8 +427,22 @@ class Users extends Dbh
 
     public function showroomById($id)
     {
-        $stmt = $this->connect()->prepare("SELECT * FROM tbl_rooms WHERE tr_id = ?");
+        $stmt = $this->connect()->prepare("SELECT * FROM tbl_rooms r INNER JOIN tbl_provider p ON r.p_id = p.p_id WHERE r.tr_id = ?");
 
+        if (!$stmt) {
+            die("SQL Error: " . $this->connect()->error); // Shows SQL error
+        }
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+
+    public function showroomProfile($id)
+    {
+        $stmt = $this->connect()->prepare("SELECT * FROM tbl_rooms WHERE tr_id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -403,7 +457,7 @@ class Users extends Dbh
         $stmt = $this->connect()->prepare("UPDATE tbl_users SET u_pass = ? WHERE u_id = ?");
 
         $stmt->bind_param("si", $hashedPassword, $id);
-         $result = $stmt->execute();
+        $result = $stmt->execute();
 
         return $result;
     }
@@ -428,6 +482,35 @@ class Users extends Dbh
             $stmt->execute();
 
             return $stmt->affected_rows > 0;
+        }
+
+        return false;
+    }
+
+    public function updateUserInfo($id, $fname, $lname, $mname, $phone, $email, $brgy, $block, $street, $city, $zip)
+    {
+        $stmt = $this->connect()->prepare("UPDATE tbl_users SET 
+            u_fname = ?, 
+            u_lname = ?, 
+            u_mname = ?, 
+            u_email = ? 
+            WHERE u_id = ?");
+        $stmt->bind_param("ssssi", $fname, $lname, $mname, $email, $id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows >= 0) {
+            $stmt = $this->connect()->prepare("UPDATE tbl_personal_info SET 
+                pi_contact = ?, 
+                pi_brgy = ?, 
+                pi_block = ?, 
+                pi_street = ?, 
+                pi_city = ?, 
+                pi_zip = ? 
+                WHERE u_id = ?");
+            $stmt->bind_param("ssssssi", $phone, $brgy, $block, $street, $city, $zip, $id);
+            $stmt->execute();
+
+            return $stmt->affected_rows >= 0;
         }
 
         return false;

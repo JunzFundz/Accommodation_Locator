@@ -10,13 +10,17 @@ if (isset($_POST['signup'])) {
     $email = $_POST['email'];
     $pass = $_POST['password'];
 
-    // if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    //     die("Invalid email address.");
-    // }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $response = array(
+            'error' => "Email is not valid",
+        );
+    }
 
-    // if (strlen($pass) < 8 || !preg_match('/[A-Z]/', $pass) || !preg_match('/[0-9]/', $pass)) {
-    //     die("Password must be at least 8 characters long, include at least one uppercase letter and one number.");
-    // }
+    if (strlen($pass) < 8 || !preg_match('/[A-Z]/', $pass) || !preg_match('/[0-9]/', $pass)) {
+        $response = array(
+            'error' => "Password must be at least 8 characters long, include at least one uppercase letter and one number.",
+        );
+    }
 
     $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
 
@@ -38,7 +42,7 @@ if (isset($_POST['signup'])) {
         $response = array(
             'id' => $_SESSION['u_id'],
             'email' => $_SESSION['u_email'],
-            'success' => "Account created go to home to Log in",
+            'success' => "Account created please proceed to verification page",
         );
     }
 

@@ -67,14 +67,32 @@ if (isset($_POST['check'])) {
                                 </a>
                             </p>
                         </div>
-
                         <div class="flex flex-col gap-2 py-4 sm:gap-6 sm:flex-row sm:items-center">
+                            <div>
+                                <img id="front-id" class="clickable-image w-50 h-32 cursor-pointer rounded-md"
+                                    src="../../uploads/<?= htmlspecialchars($result['r_id_front']) ?>"
+                                    alt="Front ID">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2 py-4 sm:gap-6 sm:flex-row sm:items-center">
+                            <div>
+                                <img id="back-id" class="clickable-image w-50 h-32 cursor-pointer rounded-md"
+                                    src="../../uploads/<?= htmlspecialchars($result['r_id_back']) ?>"
+                                    alt="Back ID">
+                            </div>
                         </div>
 
                     </div>
                 </div>
             </div>
         </section>
+
+        <div id="imageModal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 flex justify-center items-center">
+            <div class="relative">
+                <span id="closeModal" class="absolute top-2 right-4 text-white text-3xl cursor-pointer">&times;</span>
+                <img id="modalImage" class="max-w-full max-h-screen rounded-lg shadow-lg" src="" alt="Full View">
+            </div>
+        </div>
 
 
     <?php } else { ?>
@@ -140,3 +158,4 @@ if (isset($_POST['view_modal'])) {
         <p>No data found.</p>
 <?php }
 }
+?>
