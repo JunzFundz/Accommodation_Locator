@@ -29,9 +29,7 @@ body {
 .masonry-grid {
     column-count: 1;
     column-gap: 15px;
-    /* Reduce the gap for better fit */
     padding: 3px;
-    /* Small padding for aesthetics */
 }
 
 @media (min-width: 300px) {

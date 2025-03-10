@@ -13,3 +13,9 @@ if(isset($_GET['number'])){
 
     $result = $load->showRooms($pid);
 }
+
+if(isset($_GET['user'])){
+    $pid = $_GET['user'];
+
+    $result = $load->showRooms($pid);
+}

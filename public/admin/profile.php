@@ -32,6 +32,7 @@ if (isset($_GET['id']) && isset($_GET['number'])) {
 </head>
 
 <body>
+    
     <nav class="bg-white border-gray-200 dark:bg-blue-900 dark:border-gray-700">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -106,7 +107,7 @@ if (isset($_GET['id']) && isset($_GET['number'])) {
                                 <i class="fa-solid fa-location-dot text-red-500"></i> <a href="<?= htmlspecialchars($results['p_link']); ?>"><?= htmlspecialchars($results['p_address'] ?? 'N/A'); ?></a>
                             </p>
                             <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
-                                <i class="fa-solid fa-phone"></i> <a href="<?= htmlspecialchars($results['p_link']); ?>"><?= htmlspecialchars($results['pi_contact'] ?? 'N/A'); ?></a>
+                                <i class="fa-solid fa-phone"></i><a href="<?= htmlspecialchars($results['p_link']); ?>"><?= htmlspecialchars($results['pi_contact'] ?? 'N/A'); ?></a>
                             </p>
                             <p class="mb-4 text-lg font-bold">
                                 <a href="#" class="click_deactivate text-red-500" data-pid="<?= htmlspecialchars($results['p_id']); ?>" data-uid="<?= htmlspecialchars($results['u_id']); ?>">

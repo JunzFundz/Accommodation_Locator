@@ -430,7 +430,7 @@ class Users extends Dbh
         $stmt = $this->connect()->prepare("SELECT * FROM tbl_rooms r INNER JOIN tbl_provider p ON r.p_id = p.p_id WHERE r.tr_id = ?");
 
         if (!$stmt) {
-            die("SQL Error: " . $this->connect()->error); // Shows SQL error
+            die("SQL Error: " . $this->connect()->error);
         }
 
         $stmt->bind_param("i", $id);

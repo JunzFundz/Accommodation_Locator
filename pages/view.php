@@ -68,7 +68,7 @@ if (isset($_GET['number'])) {
 
     <nav class="custom-nav-bg border-gray-200">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <a href="home.php" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="logo.png" class="h-12" alt="Flowbite Logo">
                 <span class="logotext self-center text-white text-2xl font-semibold whitespace-nowrap">Acommodation Locator</span>
             </a>
@@ -131,8 +131,6 @@ if (isset($_GET['number'])) {
                             echo '<p style="text-align: center; color: gray;">Invalid image data.</p>';
                         } else {
                             foreach ($images as $index => $image): ?>
-
-                                <!-- Masonry Item -->
                                 <div class="masonry-item">
                                     <img src="../uploads/<?= htmlspecialchars(trim($image)) ?>"
                                         alt="Image <?= $index + 1 ?>">
@@ -172,6 +170,16 @@ if (isset($_GET['number'])) {
                                 <ul class="mt-2 flex items-center gap-4">
                                     <li class="flex items-center gap-2">
                                         <p class="text-sm font-medium"><?php echo $row['p_address'] ?></p>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <p class="text-sm font-medium">
+                                            <?php
+                                            if ($row['tr_status'] == 1) {
+                                                echo '<span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">Available</span>';
+                                            } else {
+                                                echo '<span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">Not Available</span>';
+                                            }
+                                            ?></p>
                                     </li>
                                 </ul>
 
@@ -213,6 +221,42 @@ if (isset($_GET['number'])) {
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
+        $('.log-in').on('click', function(e) {
+            e.preventDefault();
+
+            const email = $('#email').val();
+            const password = $('#password').val();
+
+            $.ajax({
+                url: '../database/login.php',
+                method: 'POST',
+                data: {
+                    'login-user': true,
+                    email: email,
+                    password: password
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.redirect) {
+                        window.location.href = response.redirect;
+                    } else {
+                        Swal.fire({
+                            title: response.error,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        })
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: "Error submitting the form: " + xhr.responseText,
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    })
+                }
+            })
+        })
+
         $("#location-search").on("input", function() {
             let query = $(this).val();
             if (query.length > 0) {

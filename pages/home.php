@@ -61,7 +61,7 @@ $result = $show->showProvidersPage(3, 0);
 
     <nav class="custom-nav-bg border-gray-200">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <a href="home.php" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="logo.png" class="h-12" alt="Flowbite Logo">
                 <span class="logotext self-center text-white text-2xl font-semibold whitespace-nowrap">Acommodation Locator</span>
             </a>
@@ -689,7 +689,6 @@ $result = $show->showProvidersPage(3, 0);
 
             updateResultsCount(selectedFilters);
         });
-
 
         function updateResultsCount(filters) {
             console.log("Sending filters to server:", filters);

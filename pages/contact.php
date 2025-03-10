@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
-    <title>About</title>
+    <title>Contact</title>
 </head>
 
 <style>
@@ -18,6 +18,45 @@
 </style>
 
 <body>
+
+    <!-- Main modal -->
+    <div id="change-password" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow-sm">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-700">
+                        Change password
+                    </h3>
+                    <button type="button" class="text-gray-700 bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="change-password">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">
+                    <form>
+                        <input value="<?php echo $_SESSION['u_email'] ?>" type="hidden" id="email" />
+                        <div class="mb-6">
+                            <label for="npass" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
+                            <input type="password" id="npass" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        </div>
+                        <div class="mb-6">
+                            <label for="rpass" class="block mb-2 text-sm font-medium text-gray-900 ">Confirm password</label>
+                            <input type="password" id="rpass" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        </div>
+                    </form>
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="submit" id="update_pass" data-id="<?php echo $_SESSION['u_id'] ?? null ?>" class="update_pass text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
@@ -61,7 +100,7 @@
 
     <nav class="custom-nav-bg border-gray-200">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <a href="home.php" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="logo.png" class="h-12" alt="Flowbite Logo">
                 <span class="logotext self-center text-white text-2xl font-semibold whitespace-nowrap">Acommodation Locator</span>
             </a>
@@ -116,7 +155,46 @@
     </div>
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        $('.log-in').on('click', function(e) {
+            e.preventDefault();
 
+            const email = $('#email').val();
+            const password = $('#password').val();
+
+            $.ajax({
+                url: '../database/login.php',
+                method: 'POST',
+                data: {
+                    'login-user': true,
+                    email: email,
+                    password: password
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.redirect) {
+                        window.location.href = response.redirect;
+                    } else {
+                        Swal.fire({
+                            title: response.error,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        })
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: "Error submitting the form: " + xhr.responseText,
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    })
+                }
+            })
+        })
+    })
+</script>
 </html>

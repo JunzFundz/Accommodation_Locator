@@ -28,6 +28,14 @@ if (isset($_GET['number'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../css/user.css">
     <title>Accommodation Locator</title>
+    <style>
+        .masonry-item {
+            -webkit-box-shadow: 4px 3px 16.5px 5px #ded8d8;
+            -moz-box-shadow: 4px 3px 16.5px 5px #ded8d8;
+            box-shadow: 4px 3px 16.5px 5px #ded8d8;
+            border: 1px gray;
+        }
+    </style>
 </head>
 
 <body>
@@ -93,15 +101,15 @@ if (isset($_GET['number'])) {
             <div class="mx-auto max-w-screen-sm text-center">
                 <h1 class="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 ">
                     <center>
-                    <img src="../../uploads/<?php echo $loads['u_profile'] ?>" style="width: 20%; border-radius: 50%; aspect-ratio: 2/2" alt="Flowbite Logo">
+                        <img src="../../uploads/<?php echo $loads['u_profile'] ?>" style="width: 20%; border-radius: 50%; aspect-ratio: 2/2" alt="Flowbite Logo">
                     </center>
                 </h1>
                 <p class="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl"><?= htmlspecialchars($result['p_name'] ?? 'N/A'); ?></p>
                 <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
-                    <i class="fa-solid fa-location-dot text-red-500"></i> <a href="<?= htmlspecialchars($result['p_link']); ?>"><?= htmlspecialchars($result['p_address'] ?? 'N/A'); ?></a>
+                    <i class="fa-solid fa-location-dot text-red-500"></i><?= htmlspecialchars($result['p_address'] ?? 'N/A'); ?>
                 </p>
                 <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
-                    <i class="fa-solid fa-phone"></i> <a href="<?= htmlspecialchars($result['p_link']); ?>"><?= htmlspecialchars($result['p_address'] ?? 'N/A'); ?></a>
+                    <i class="fa-solid fa-phone"></i><?= htmlspecialchars($result['pi_contact']); ?>
                 </p>
             </div>
         </div>

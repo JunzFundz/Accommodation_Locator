@@ -20,6 +20,7 @@
 
 <body>
 
+    <!-- Log in modal -->
     <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
             <!-- Modal content -->
@@ -41,11 +42,11 @@
                     <form class="space-y-4">
                         <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-white">Your email</label>
-                            <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400" placeholder="youremail@gmail.com" required />
+                            <input type="email" name="email" id="email" class="border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="youremail@gmail.com" required />
                         </div>
                         <div>
                             <label for="password" class="block mb-2 text-sm font-medium text-white">Your password</label>
-                            <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400" required />
+                            <input type="password" name="password" id="password" placeholder="••••••••" class="border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                         </div>
                         <div class="flex justify-between">
                             <a href="forgot-password.php" class="text-sm text-blue-700 hover:underline">Lost Password?</a>
@@ -62,7 +63,7 @@
 
     <nav class="custom-nav-bg border-gray-200">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <a href="home.php" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="logo.png" class="h-12" alt="Flowbite Logo">
                 <span class="logotext self-center text-white text-2xl font-semibold whitespace-nowrap">Acommodation Locator</span>
             </a>
@@ -181,7 +182,46 @@
         </div>
     </section>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        $('.log-in').on('click', function(e) {
+            e.preventDefault();
 
+            const email = $('#email').val();
+            const password = $('#password').val();
+
+            $.ajax({
+                url: '../database/login.php',
+                method: 'POST',
+                data: {
+                    'login-user': true,
+                    email: email,
+                    password: password
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.redirect) {
+                        window.location.href = response.redirect;
+                    } else {
+                        Swal.fire({
+                            title: response.error,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        })
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: "Error submitting the form: " + xhr.responseText,
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    })
+                }
+            })
+        })
+    })
+</script>
 </html>

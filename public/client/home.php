@@ -60,7 +60,6 @@ foreach ($data as $datas) {
                             <input type="password" id="rpass" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                         </div>
                     </form>
-
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -590,6 +589,51 @@ foreach ($data as $datas) {
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
+        $('.update_pass').on('click', function(e) {
+                e.preventDefault();
+
+                const id = $(this).data('id');
+                const npass = $('#npass').val();
+                const rpass = $('#rpass').val();
+
+                $.ajax({
+                    url: '../../database/update.php',
+                    method: 'POST',
+                    data: {
+                        'update_password': true,
+                        id: id,
+                        npass: npass,
+                        rpass: rpass
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: response.success,
+                                icon: "success",
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: response.error,
+                                icon: "error",
+                                confirmButtonText: "OK"
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            title: "Error submitting the form: " + xhr.responseText,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        })
+                    }
+                })
+            });
 
         $("#show-more-btn").click(function() {
             let button = $(this);

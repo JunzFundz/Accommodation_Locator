@@ -90,230 +90,272 @@ include __DIR__ . "/../../database/load-rooms.php";
                 <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700">
 
                     <div style="font-size: 20px; margin-bottom: .5rem; float:right">
-                        <i data-tid="<?= $row['tr_id'] ?>" class="show-update fa-solid fa-pen-to-square text-green-600 cursor-pointer"></i>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <i class="fa-solid fa-trash text-red-400 cursor-pointer delete_room" data-tid="<?= $row['tr_id'] ?>"></i>
-                    </div>
-                    <br>
-                    <div class="h-56 w-full">
-                        <a href="view.php?number=<?= $row['p_id'] ?> && name=<?= $row['p_name'] ?>">
-                            <img class="mx-auto h-full " src="../../uploads/<?php echo $firstImage; ?>" alt="Property Image" />
-                        </a>
-                    </div>
-                    <div class="pt-6">
-                        <a href="view.php?number=<?= $row['p_id'] ?> && name=<?= $row['p_name'] ?>" class="text-lg font-semibold leading-tight text-gray-900 hover:underline "><?php echo $row['tr_name'] ?></a>
 
-                        <ul class="mt-2 flex items-center gap-4">
-                            <li class="flex items-center gap-2">
-                                <p class="text-sm font-medium"><?php echo $row['p_address'] ?></p>
-                            </li>
-                        </ul>
+                        <label data-tooltip-target="tooltip-change" class="inline-flex items-center mb-5 cursor-pointer">
+                            <input type="checkbox" data-tid="<?= $row['tr_id'] ?>" class="sr-only peer room-toggle"
+                                <?= $row['tr_status'] == 1 ? 'checked' : '' ?>>
+                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
 
-                        <div class="mt-4 flex items-center justify-between gap-4">
-                            <p class="text-2xl font-extrabold leading-tight">₱<?php echo number_format($row['tr_price']) ?></p>
-                        </div>
+                            <div id="tooltip-change" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+                                Change availability
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                        </label>
+
                     </div>
                 </div>
-            <?php endforeach; ?>
-        <?php else : ?>
-            <p class="text-center text-red-500">No data found.</p>
-        <?php endif; ?>
+                <br>
+                <div class="h-56 w-full">
+                    <a href="view.php?number=<?= $row['p_id'] ?> && name=<?= $row['p_name'] ?>">
+                        <img class="mx-auto h-full " src="../../uploads/<?php echo $firstImage; ?>" alt="Property Image" />
+                    </a>
+                </div>
+                <div class="pt-6">
+                    <a href="view.php?number=<?= $row['p_id'] ?> && name=<?= $row['p_name'] ?>" class="text-lg font-semibold leading-tight text-gray-900 hover:underline "><?php echo $row['tr_name'] ?></a>
 
+                    <ul class="mt-2 flex items-center gap-4">
+                        <li class="flex items-center gap-2">
+                            <p class="text-sm font-medium"><?php echo $row['p_address'] ?></p>
+                        </li>
+                    </ul>
+
+                    <div class="mt-4 flex items-center justify-between gap-4">
+                        <p class="text-2xl font-extrabold leading-tight">₱<?php echo number_format($row['tr_price']) ?></p>
+                    </div>
+
+                    <ul class="mt-2 flex items-center gap-4">
+                        <li class="flex items-center gap-2">
+                            <i data-tid="<?= $row['tr_id'] ?>" class="show-update fa-solid fa-pen-to-square text-green-600 cursor-pointer"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i class="fa-solid fa-trash text-red-400 cursor-pointer delete_room" data-tid="<?= $row['tr_id'] ?>"></i>
+                        </li>
+                    </ul>
+                </div>
     </div>
+<?php endforeach; ?>
+<?php else : ?>
+    <p class="text-center text-red-500">No data found.</p>
+<?php endif; ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const drawerElement = document.getElementById("show-update-form");
-            if (drawerElement) {
-                window.drawerInstance = new Drawer(drawerElement);
-            } else {
-                console.error("Drawer element not found.");
-            }
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".room-toggle").on("change", function() {
+            let tr_id = $(this).data("tid");
+            let status = $(this).is(":checked") ? 1 : 2;
+
+            console.log(tr_id, status);
+
+            $.ajax({
+                url: "../../database/change.php",
+                type: "POST",
+                data: {
+                    tr_id: tr_id,
+                    status: status
+                },
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
         });
+    });
 
-        function showDrawer() {
-            if (window.drawerInstance) {
-                window.drawerInstance.show();
-            } else {
-                console.error("Drawer instance is not initialized.");
-            }
+    document.addEventListener("DOMContentLoaded", function() {
+        const drawerElement = document.getElementById("show-update-form");
+        if (drawerElement) {
+            window.drawerInstance = new Drawer(drawerElement);
+        } else {
+            console.error("Drawer element not found.");
         }
+    });
 
-        function closeDrawer() {
-            if (window.drawerInstance) {
-                window.drawerInstance.hide();
-            } else {
-                console.error("Drawer instance is not initialized.");
-            }
+    function showDrawer() {
+        if (window.drawerInstance) {
+            window.drawerInstance.show();
+        } else {
+            console.error("Drawer instance is not initialized.");
         }
+    }
 
-        $(document).ready(function() {
-            $('.show-update').on('click', function() {
-                const tid = $(this).data('tid');
+    function closeDrawer() {
+        if (window.drawerInstance) {
+            window.drawerInstance.hide();
+        } else {
+            console.error("Drawer instance is not initialized.");
+        }
+    }
 
-                $.ajax({
-                    url: '../../database/update-rooms.php',
-                    method: 'post',
-                    data: {
-                        'get_data': true,
-                        tid: tid
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        $('#rname').val(response.tr_name);
-                        $('#rprice').val(response.tr_price);
-                        $('#description').val(response.tr_description);
+    $(document).ready(function() {
+        $('.show-update').on('click', function() {
+            const tid = $(this).data('tid');
 
-                        if (!Array.isArray(response.tr_images)) {
-                            response.tr_images = [];
-                        }
+            $.ajax({
+                url: '../../database/update-rooms.php',
+                method: 'post',
+                data: {
+                    'get_data': true,
+                    tid: tid
+                },
+                dataType: 'json',
+                success: function(response) {
+                    $('#rname').val(response.tr_name);
+                    $('#rprice').val(response.tr_price);
+                    $('#description').val(response.tr_description);
 
-                        $('#image_preview').html("");
+                    if (!Array.isArray(response.tr_images)) {
+                        response.tr_images = [];
+                    }
 
-                        response.tr_images.forEach(function(image) {
-                            $('#image_preview').append(`
+                    $('#image_preview').html("");
+
+                    response.tr_images.forEach(function(image) {
+                        $('#image_preview').append(`
             <div class="relative inline-block m-2">
                 <img src="../../uploads/${image}" class="h-20 w-20 object-cover rounded">
                 <button class="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded remove-image" data-roomid="${tid}" data-image="${image}">X</button>
             </div>`);
-                        });
+                    });
 
-                        showDrawer();
-                    }
-
-                })
-            })
-
-            $(document).on('click', '.remove-image', function(e) {
-                e.preventDefault();
-
-                const imageName = $(this).data('image');
-                const roomId = $(this).data('roomid');
-                const imageElement = $(this).closest('div');
-
-                console.log("Deleting:", roomId, imageName);
-
-                $.ajax({
-                    url: '../../database/update-rooms.php',
-                    method: 'POST',
-                    data: {
-                        delete_image: true,
-                        image_name: imageName,
-                        room_id: roomId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            console.log(response.success);
-                            imageElement.remove();
-                        } else {
-                            console.log(response.error);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX Error:", error);
-                        console.log("Response Text:", xhr.responseText);
-                    }
-                });
-            });
-
-            $('.update-room').on('click', function(e) {
-                e.preventDefault();
-
-                const id = $(this).data('id');
-                const name = $('#rname').val();
-                const price = $('#rprice').val();
-                const address = $('#address').val();
-                const description = $('#description').val();
-
-                const fileInput = document.getElementById('file_input');
-                const files = fileInput.files;
-
-                let formData = new FormData();
-                formData.append('update_room', true);
-                formData.append('id', id);
-                formData.append('name', name);
-                formData.append('price', price);
-                formData.append('description', description);
-
-                for (let i = 0; i < files.length; i++) {
-                    formData.append('images[]', files[i]);
+                    showDrawer();
                 }
 
-                for (let pair of formData.entries()) {
-                    console.log(pair[0], pair[1]);
-                }
-
-                $.ajax({
-                    url: '../../database/update-rooms.php',
-                    method: 'POST',
-                    data: formData,
-                    dataType: 'json',
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire({
-                                title: response.success,
-                                icon: "success",
-                                confirmButtonText: "OK"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.reload();
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                title: response.error,
-                                icon: "error",
-                                confirmButtonText: "OK"
-                            })
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX Error:", error);
-                    }
-                });
-            });
-
-            $('.delete_room').on('click', function() {
-                const id = $(this).data('tid');
-
-                $.ajax({
-                    url: '../../database/update-rooms.php',
-                    method: 'POST',
-                    data: {
-                        'delete_room': true,
-                        id: id
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire({
-                                title: response.success,
-                                icon: "success",
-                                confirmButtonText: "OK"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.reload();
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                title: response.error,
-                                icon: "error",
-                                confirmButtonText: "OK"
-                            })
-                        }
-                    }
-                })
             })
-
         })
-    </script>
+
+        $(document).on('click', '.remove-image', function(e) {
+            e.preventDefault();
+
+            const imageName = $(this).data('image');
+            const roomId = $(this).data('roomid');
+            const imageElement = $(this).closest('div');
+
+            console.log("Deleting:", roomId, imageName);
+
+            $.ajax({
+                url: '../../database/update-rooms.php',
+                method: 'POST',
+                data: {
+                    delete_image: true,
+                    image_name: imageName,
+                    room_id: roomId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        console.log(response.success);
+                        imageElement.remove();
+                    } else {
+                        console.log(response.error);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                    console.log("Response Text:", xhr.responseText);
+                }
+            });
+        });
+
+        $('.update-room').on('click', function(e) {
+            e.preventDefault();
+
+            const id = $(this).data('id');
+            const name = $('#rname').val();
+            const price = $('#rprice').val();
+            const address = $('#address').val();
+            const description = $('#description').val();
+
+            const fileInput = document.getElementById('file_input');
+            const files = fileInput.files;
+
+            let formData = new FormData();
+            formData.append('update_room', true);
+            formData.append('id', id);
+            formData.append('name', name);
+            formData.append('price', price);
+            formData.append('description', description);
+
+            for (let i = 0; i < files.length; i++) {
+                formData.append('images[]', files[i]);
+            }
+
+            for (let pair of formData.entries()) {
+                console.log(pair[0], pair[1]);
+            }
+
+            $.ajax({
+                url: '../../database/update-rooms.php',
+                method: 'POST',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            title: response.success,
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: response.error,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        })
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                }
+            });
+        });
+
+        $('.delete_room').on('click', function() {
+            const id = $(this).data('tid');
+
+            $.ajax({
+                url: '../../database/update-rooms.php',
+                method: 'POST',
+                data: {
+                    'delete_room': true,
+                    id: id
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            title: response.success,
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: response.error,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        })
+                    }
+                }
+            })
+        })
+
+    })
+</script>
 </body>
 
 </html>
